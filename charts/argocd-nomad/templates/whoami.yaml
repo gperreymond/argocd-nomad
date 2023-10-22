@@ -4,6 +4,7 @@ kind: NomadJob
 metadata:
   name: whoami
 spec:
+  jobName: whoami
   jobHCL: |
     job "whoami" {
       datacenters = ["dc1"]
@@ -24,6 +25,7 @@ kind: NomadJob
 metadata:
   name: whoami-002
 spec:
+  jobName: whoami-002
   jobHCL: |
     job "whoami-002" {
       datacenters = ["dc1"]

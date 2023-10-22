@@ -58,7 +58,7 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Fetch the NomadJob instance
 	nomadJob := &nomadv1.NomadJob{}
-	jobName := nomadJob.Name
+	jobName := nomadJob.Spec.jobName
 	namespace := nomadJob.Namespace
 
 	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
@@ -94,7 +94,7 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		return reconcile.Result{}, err
 	}
 	// Run 'nomad run' command
-	cmd := exec.Command("nomad", "run", jobFilePath)
+	cmd := exec.Command("nomad", "job", "run", jobFilePath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()

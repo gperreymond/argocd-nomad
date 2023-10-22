@@ -35,6 +35,8 @@ spec:
             description: NomadJobSpec defines the desired state of NomadJob
             properties:
               jobHCL:
+                type: string
+              jobName:
                 description: Fields of NomadJob. Edit nomadjob_types.go to remove/update
                 type: string
             type: object

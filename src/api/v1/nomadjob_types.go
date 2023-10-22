@@ -29,6 +29,7 @@ type NomadJobSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Fields of NomadJob. Edit nomadjob_types.go to remove/update
+	JobName string `json:"jobName,omitempty"`
 	JobHCL string `json:"jobHCL,omitempty"`
 }
 
