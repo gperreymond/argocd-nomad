@@ -11,20 +11,20 @@ spec:
     singular: nomadjob
   scope: Namespaced
   versions:
-    - name: v1
-      served: true
-      storage: true
-      validation:
-        openAPIV3Schema:
-          type: object
-          properties:
-            jobHCL:
-              type: string
-              description: HashiCorp Configuration Language (HCL) code for the Nomad job
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          jobHCL:
+            type: string
+            description: HashiCorp Configuration Language (HCL) code for the Nomad job
   additionalPrinterColumns:
-    - name: Status
-      type: string
-      description: The status of the Nomad job
-      JSONPath: .status.jobStatus
+  - name: Status
+    type: string
+    description: The status of the Nomad job
+    JSONPath: .status.jobStatus
   subresources:
     status: {}
