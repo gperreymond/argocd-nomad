@@ -21,10 +21,3 @@ spec:
           jobHCL:
             type: string
             description: HashiCorp Configuration Language (HCL) code for the Nomad job
-  additionalPrinterColumns:
-  - name: Status
-    type: string
-    description: The status of the Nomad job
-    JSONPath: .status.jobStatus
-  subresources:
-    status: {}
