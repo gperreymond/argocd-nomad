@@ -18,6 +18,9 @@ spec:
       openAPIV3Schema:
         type: object
         properties:
-          jobHCL:
-            type: string
-            description: HashiCorp Configuration Language (HCL) code for the Nomad job
+          spec:
+            type: object
+            properties:
+              jobHCL:
+                type: string
+                description: HashiCorp Configuration Language (HCL) code for the Nomad job
