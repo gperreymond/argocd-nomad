@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-nomad
+  namespace: argocd-system
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/gperreymond/argocd-nomad.git
+    targetRevision: master
+    path: charts/argocd-nomad
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nomad-system

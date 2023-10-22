@@ -1,0 +1,5 @@
+crds:
+  install: true
+configs:
+  params:
+    "server.disable.auth": true
