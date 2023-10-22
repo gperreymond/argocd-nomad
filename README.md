@@ -1,4 +1,4 @@
-# ARGOCD NOMAD
+# ARGOCD NOMAD
 
 ```sh
 $ .wtf/install-dependencies.sh
