@@ -1,5 +1,5 @@
-apiVersion: nomad.asytech.com/v1alpha1
-kind: Job
+apiVersion: nomad.asytech.com/v1
+kind: NomadJob
 metadata:
   name: whoami
 spec:
