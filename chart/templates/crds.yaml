@@ -14,6 +14,13 @@ spec:
     - name: v1
       served: true
       storage: true
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            jobHCL:
+              type: string
+              description: HashiCorp Configuration Language (HCL) code for the Nomad job
   additionalPrinterColumns:
     - name: Status
       type: string
@@ -21,10 +28,3 @@ spec:
       JSONPath: .status.jobStatus
   subresources:
     status: {}
-  validation:
-    openAPIV3Schema:
-      type: object
-      properties:
-        jobHCL:
-          type: string
-          description: HashiCorp Configuration Language (HCL) code for the Nomad job
