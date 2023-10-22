@@ -1,0 +1,27 @@
+# permissions for end users to view nomadjobs.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: nomadjob-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: src
+    app.kubernetes.io/part-of: src
+    app.kubernetes.io/managed-by: kustomize
+  name: nomadjob-viewer-role
+rules:
+- apiGroups:
+  - nomad.asytech.com
+  resources:
+  - nomadjobs
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - nomad.asytech.com
+  resources:
+  - nomadjobs/status
+  verbs:
+  - get
