@@ -1,0 +1,6 @@
+apiVersion: v2
+name: argocd-nomad
+home: https://...
+type: application
+icon: https://www.metronlab.com/hubfs/logo/logo-footer.svg
+version: 1.0.0
