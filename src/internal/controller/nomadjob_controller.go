@@ -58,25 +58,41 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Fetch the NomadJob instance
 	nomadJob := &nomadv1.NomadJob{}
+	jobName := nomadJob.Name
+	namespace := nomadJob.Namespace
+
 	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
+
+		// -------------------
+		// La ressource NomadJob a été supprimée
+		// -------------------
+
 		if errors.IsNotFound(err) {
+			// Run 'nomad job stop -purge' command
+			cmd := exec.Command("nomad", "job", "stop", "-purge", jobName)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			err = cmd.Run()
+			if err != nil {
+				return reconcile.Result{}, err
+			}
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
 	}
 
+	// -------------------
+	// La ressource NomadJob doit être créée / modifiée
+	// -------------------
+
 	// Extract jobHCL from the NomadJob spec
 	jobHCL := nomadJob.Spec.JobHCL
-	jobName := nomadJob.Name
-	namespace := nomadJob.Namespace
-
 	// Write the jobHCL to a temporary file
 	jobFilePath := filepath.Join(jobDirPath, namespace, jobName, "job.hcl")
 	err := writeJobHCLToFile(jobHCL, jobFilePath)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-
 	// Run 'nomad run' command
 	cmd := exec.Command("nomad", "run", jobFilePath)
 	cmd.Stdout = os.Stdout
