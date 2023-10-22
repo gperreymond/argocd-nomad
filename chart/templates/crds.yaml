@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   name: jobs.nomad.asytech.com
 spec:
-  group: asytech.com
+  group: nomad.asytech.com
   names:
     kind: Job
     plural: jobs
