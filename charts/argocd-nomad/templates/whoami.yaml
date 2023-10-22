@@ -1,3 +1,4 @@
+---
 apiVersion: nomad.asytech.com/v1
 kind: NomadJob
 metadata:
@@ -7,6 +8,26 @@ spec:
     job "whoami" {
       datacenters = ["dc1"]
       group "whoami" {
+        count = 1
+        task "app" {
+          driver = "docker"
+          config {
+            image = "traefik/whoami:v1.10"
+          }
+        }
+      }
+    }
+
+---
+apiVersion: nomad.asytech.com/v1
+kind: NomadJob
+metadata:
+  name: whoami-002
+spec:
+  jobHCL: |
+    job "whoami-002" {
+      datacenters = ["dc1"]
+      group "whoami-002" {
         count = 1
         task "app" {
           driver = "docker"
