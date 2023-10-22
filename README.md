@@ -1,6 +1,7 @@
 # ARGOCD NOMAD
 
 ```sh
+$ nomad agent -dev
 $ .wtf/install-dependencies.sh
 $ .wtf/start-cluster.sh
 $ .wtf/prepare.sh

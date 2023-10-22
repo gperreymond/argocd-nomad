@@ -18,14 +18,21 @@ package controller
 
 import (
 	"context"
+	"os"
+	"os/exec"
+	"path/filepath"
 
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	nomadv1 "asytech.com/nomad/api/v1"
 )
+
+const jobDirPath = "/tmp/nomadjobs"
 
 // NomadJobReconciler reconciles a NomadJob object
 type NomadJobReconciler struct {
@@ -49,7 +56,35 @@ type NomadJobReconciler struct {
 func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	// Fetch the NomadJob instance
+	nomadJob := &nomadv1.NomadJob{}
+	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
+		if errors.IsNotFound(err) {
+			return reconcile.Result{}, nil
+		}
+		return reconcile.Result{}, err
+	}
+
+	// Extract jobHCL from the NomadJob spec
+	jobHCL := nomadJob.Spec.JobHCL
+	jobName := nomadJob.Name
+	namespace := nomadJob.Namespace
+
+	// Write the jobHCL to a temporary file
+	jobFilePath := filepath.Join(jobDirPath, namespace, jobName, "job.hcl")
+	err := writeJobHCLToFile(jobHCL, jobFilePath)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	// Run 'nomad run' command
+	cmd := exec.Command("nomad", "run", jobFilePath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
@@ -59,4 +94,17 @@ func (r *NomadJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&nomadv1.NomadJob{}).
 		Complete(r)
+}
+
+func writeJobHCLToFile(jobHCL, filePath string) error {
+	if err := os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
+		return err
+	}
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	_, err = file.WriteString(jobHCL)
+	return err
 }
