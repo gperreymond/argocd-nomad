@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -58,8 +59,6 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Fetch the NomadJob instance
 	nomadJob := &nomadv1.NomadJob{}
-	jobName := nomadJob.Spec.jobName
-	namespace := nomadJob.Namespace
 
 	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
 
@@ -69,6 +68,10 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		if errors.IsNotFound(err) {
 			// Run 'nomad job stop -purge' command
+			// Fetch the NomadJob instance
+			jobName := nomadJob.Spec.JobName
+			fmt.Printf("Le nom du job est : %s\n", jobName)
+			// namespace := nomadJob.Namespace
 			cmd := exec.Command("nomad", "job", "stop", "-purge", jobName)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
@@ -87,6 +90,9 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Extract jobHCL from the NomadJob spec
 	jobHCL := nomadJob.Spec.JobHCL
+	jobName := nomadJob.Spec.JobName
+	namespace := nomadJob.Spec.JobNamespace
+	fmt.Printf("Le nom du job est : %s\n", jobName)
 	// Write the jobHCL to a temporary file
 	jobFilePath := filepath.Join(jobDirPath, namespace, jobName, "job.hcl")
 	err := writeJobHCLToFile(jobHCL, jobFilePath)
