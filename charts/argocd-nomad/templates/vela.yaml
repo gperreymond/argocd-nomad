@@ -1,15 +1,16 @@
 apiVersion: core.oam.dev/v1beta1
 kind: Application
 metadata:
-  name: vela-whoami
+  name: vela-nomad
 spec:
   components:
-  - name: whoami
+  - name: nomad
     type: webservice
     properties:
-      image: traefik/whoami:v1.10
+      image: hashicorp/nomad:1.14
     traits:
     - type: scaler
       properties:
         replicas: 1
 
+---
