@@ -61,16 +61,12 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
 		if errors.IsNotFound(err) {
 			toDelete = true
-			fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'\n", nomadJob.Name, nomadJob.Namespace)
-			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
 	}
 
-	// Extract jobHCL from the NomadJob spec
-	jobHCL := nomadJob.Spec.JobHCL
-	jobName := nomadJob.Spec.JobName
-	jobNamespace := nomadJob.Spec.JobNamespace
+	jobName := nomadJob.GetAnnotations()["nomad/name"]
+	jobNamespace := nomadJob.GetAnnotations()["nomad/namespace"]
 	fmt.Printf("Le nom du job est : %s\n", jobName)
 	fmt.Printf("Le namespace du job est : %s\n", jobNamespace)
 
@@ -95,6 +91,8 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// -------------------
 	fmt.Printf("Le job '%s' a été crée/modifé dans le namespace '%s'\n", jobName, jobNamespace)
 
+	// Extract jobHCL from the NomadJob spec
+	jobHCL := nomadJob.Spec.JobHCL
 	// Write the jobHCL to a temporary file
 	jobFilePath := filepath.Join(jobDirPath, jobNamespace, jobName, "job.hcl")
 	err := writeJobHCLToFile(jobHCL, jobFilePath)

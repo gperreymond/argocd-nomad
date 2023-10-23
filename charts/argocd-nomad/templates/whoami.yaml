@@ -5,7 +5,7 @@ metadata:
   name: whoami-test-001
   annotations:
     nomad/name: whoami-001
-    nomad/namespce: default
+    nomad/namespace: default
 spec:
   jobHCL: |
     job "whoami-001" {
@@ -28,7 +28,7 @@ metadata:
   name: whoami-test-002
   annotations:
     nomad/name: whoami-001
-    nomad/namespce: default
+    nomad/namespace: default
 spec:
   jobHCL: |
     job "whoami-002" {
