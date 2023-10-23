@@ -2,12 +2,12 @@
 apiVersion: nomad.asytech.com/v1
 kind: NomadJob
 metadata:
-  name: whoami
+  name: whoami-test-001
 spec:
-  jobName: whoami
+  jobName: whoami-001
   jobNamespace: default
   jobHCL: |
-    job "whoami" {
+    job "whoami-001" {
       datacenters = ["dc1"]
       group "whoami" {
         count = 1
@@ -24,14 +24,14 @@ spec:
 apiVersion: nomad.asytech.com/v1
 kind: NomadJob
 metadata:
-  name: whoami-002
+  name: whoami-test-002
 spec:
   jobName: whoami-002
   jobNamespace: default
   jobHCL: |
     job "whoami-002" {
       datacenters = ["dc1"]
-      group "whoami-002" {
+      group "whoami" {
         count = 1
         task "app" {
           driver = "docker"

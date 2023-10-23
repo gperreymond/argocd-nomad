@@ -81,7 +81,7 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			// if err != nil {
 			// 	return reconcile.Result{}, err
 			// }
-			fmt.Printf("Le job %s a été supprimé dans le namespace %s", jobName, jobNamespace)
+			fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'", jobName, jobNamespace)
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
@@ -91,7 +91,7 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// La ressource NomadJob doit être créée / modifiée
 	// -------------------
 
-	fmt.Printf("Le job %s a été crée/modifé dans le namespace %s", jobName, jobNamespace)
+	fmt.Printf("Le job '%s' a été crée/modifé dans le namespace '%s'", jobName, jobNamespace)
 
 	// Write the jobHCL to a temporary file
 	jobFilePath := filepath.Join(jobDirPath, jobNamespace, jobName, "job.hcl")
