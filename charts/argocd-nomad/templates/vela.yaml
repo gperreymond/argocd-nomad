@@ -8,9 +8,13 @@ spec:
     type: webservice
     properties:
       image: hashicorp/nomad:1.4
+      command: 'system gc'
     traits:
     - type: scaler
       properties:
         replicas: 1
-
+  workflow:
+    steps:
+    - name: suspend
+      type: suspend
 ---
