@@ -20,14 +20,13 @@ import (
 	"context"
 	"fmt"
 	"os"
-	// "os/exec"
+	"os/exec"
 	"path/filepath"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	nomadv1 "asytech.com/nomad/api/v1"
@@ -55,10 +54,19 @@ type NomadJobReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.16.0/pkg/reconcile
 func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
-
 	// Fetch the NomadJob instance
 	nomadJob := &nomadv1.NomadJob{}
+
+	toDelete := false
+	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
+		if errors.IsNotFound(err) {
+			toDelete = true
+			fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'\n", nomadJob.Name, nomadJob.Namespace)
+			return reconcile.Result{}, nil
+		}
+		return reconcile.Result{}, err
+	}
+
 	// Extract jobHCL from the NomadJob spec
 	jobHCL := nomadJob.Spec.JobHCL
 	jobName := nomadJob.Spec.JobName
@@ -66,32 +74,26 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	fmt.Printf("Le nom du job est : %s\n", jobName)
 	fmt.Printf("Le namespace du job est : %s\n", jobNamespace)
 
-	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
-
-		// -------------------
-		// La ressource NomadJob a été supprimée
-		// -------------------
-
-		if errors.IsNotFound(err) {
-			// Run 'nomad job stop -purge' command
-			// cmd := exec.Command("nomad", "job", "stop", "-purge", "-namespace", jobNamespace, jobName)
-			// cmd.Stdout = os.Stdout
-			// cmd.Stderr = os.Stderr
-			// err = cmd.Run()
-			// if err != nil {
-			// 	return reconcile.Result{}, err
-			// }
-			fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'", jobName, jobNamespace)
-			return reconcile.Result{}, nil
+	// -------------------
+	// La ressource NomadJob a été supprimée
+	// -------------------
+	if toDelete == true {
+		fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'\n", jobName, jobNamespace)
+		// Run 'nomad job stop -purge' command
+		cmd := exec.Command("nomad", "job", "stop", "-purge", "-namespace", jobNamespace, jobName)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err := cmd.Run()
+		if err != nil {
+			return reconcile.Result{}, err
 		}
-		return reconcile.Result{}, err
+		return reconcile.Result{}, nil
 	}
 
 	// -------------------
 	// La ressource NomadJob doit être créée / modifiée
 	// -------------------
-
-	fmt.Printf("Le job '%s' a été crée/modifé dans le namespace '%s'", jobName, jobNamespace)
+	fmt.Printf("Le job '%s' a été crée/modifé dans le namespace '%s'\n", jobName, jobNamespace)
 
 	// Write the jobHCL to a temporary file
 	jobFilePath := filepath.Join(jobDirPath, jobNamespace, jobName, "job.hcl")
@@ -100,14 +102,13 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		return reconcile.Result{}, err
 	}
 	// Run 'nomad run' command
-	// cmd := exec.Command("nomad", "job", "run", jobFilePath)
-	// cmd.Stdout = os.Stdout
-	// cmd.Stderr = os.Stderr
-	// err = cmd.Run()
-	// if err != nil {
-	// 	return reconcile.Result{}, err
-	// }
-
+	cmd := exec.Command("nomad", "job", "run", "-namespace", jobNamespace, jobFilePath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 	return ctrl.Result{}, nil
 }
 
