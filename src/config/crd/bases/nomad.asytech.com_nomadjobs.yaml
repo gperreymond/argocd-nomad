@@ -40,6 +40,9 @@ spec:
               jobName:
                 description: The name of nomad job, use for delete the job.
                 type: string
+              jobNamespace:
+                description: The namespace in nomad where to deploy the job.
+                type: string
             type: object
           status:
             description: NomadJobStatus defines the observed state of NomadJob

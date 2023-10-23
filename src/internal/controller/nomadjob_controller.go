@@ -20,7 +20,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"os/exec"
+	// "os/exec"
 	"path/filepath"
 
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -59,6 +59,12 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Fetch the NomadJob instance
 	nomadJob := &nomadv1.NomadJob{}
+	// Extract jobHCL from the NomadJob spec
+	jobHCL := nomadJob.Spec.JobHCL
+	jobName := nomadJob.Spec.JobName
+	jobNamespace := nomadJob.Spec.JobNamespace
+	fmt.Printf("Le nom du job est : %s\n", jobName)
+	fmt.Printf("Le namespace du job est : %s\n", jobNamespace)
 
 	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
 
@@ -68,17 +74,14 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		if errors.IsNotFound(err) {
 			// Run 'nomad job stop -purge' command
-			// Fetch the NomadJob instance
-			jobName := nomadJob.Spec.JobName
-			fmt.Printf("Le nom du job est : %s\n", jobName)
-			// namespace := nomadJob.Namespace
-			cmd := exec.Command("nomad", "job", "stop", "-purge", jobName)
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-			err = cmd.Run()
-			if err != nil {
-				return reconcile.Result{}, err
-			}
+			// cmd := exec.Command("nomad", "job", "stop", "-purge", "-namespace", jobNamespace, jobName)
+			// cmd.Stdout = os.Stdout
+			// cmd.Stderr = os.Stderr
+			// err = cmd.Run()
+			// if err != nil {
+			// 	return reconcile.Result{}, err
+			// }
+			fmt.Printf("Le job %s a été supprimé dans le namespace %s", jobName, jobNamespace)
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
@@ -88,25 +91,22 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// La ressource NomadJob doit être créée / modifiée
 	// -------------------
 
-	// Extract jobHCL from the NomadJob spec
-	jobHCL := nomadJob.Spec.JobHCL
-	jobName := nomadJob.Spec.JobName
-	namespace := nomadJob.Spec.JobNamespace
-	fmt.Printf("Le nom du job est : %s\n", jobName)
+	fmt.Printf("Le job %s a été crée/modifé dans le namespace %s", jobName, jobNamespace)
+
 	// Write the jobHCL to a temporary file
-	jobFilePath := filepath.Join(jobDirPath, namespace, jobName, "job.hcl")
+	jobFilePath := filepath.Join(jobDirPath, jobNamespace, jobName, "job.hcl")
 	err := writeJobHCLToFile(jobHCL, jobFilePath)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
 	// Run 'nomad run' command
-	cmd := exec.Command("nomad", "job", "run", jobFilePath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	if err != nil {
-		return reconcile.Result{}, err
-	}
+	// cmd := exec.Command("nomad", "job", "run", jobFilePath)
+	// cmd.Stdout = os.Stdout
+	// cmd.Stderr = os.Stderr
+	// err = cmd.Run()
+	// if err != nil {
+	// 	return reconcile.Result{}, err
+	// }
 
 	return ctrl.Result{}, nil
 }
