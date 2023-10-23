@@ -8,4 +8,5 @@ spec:
     type: webservice
     properties:
       images: traefik/whoami:v1.10
+    traits: []
 
