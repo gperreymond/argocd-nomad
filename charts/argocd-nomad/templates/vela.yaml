@@ -1,0 +1,11 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: vela-whoami
+spec:
+  components:
+  - name: whoami
+    type: webservice
+    properties:
+      images: traefik/whoami:v1.10
+

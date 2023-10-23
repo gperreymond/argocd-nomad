@@ -5,6 +5,7 @@ $ .wtf/install-dependencies.sh
 $ .wtf/start-cluster.sh
 $ .wtf/prepare.sh
 $ nomad agent -dev
+$ vela addon enable velaux
 ```
 
 ```sh
