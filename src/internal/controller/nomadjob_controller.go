@@ -57,38 +57,39 @@ func (r *NomadJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// Fetch the NomadJob instance
 	nomadJob := &nomadv1.NomadJob{}
 
-	toDelete := false
 	if err := r.Client.Get(ctx, req.NamespacedName, nomadJob); err != nil {
+		jobName := nomadJob.Name
+		jobNamespace := nomadJob.Namespace
+		// -------------------
+		// La ressource NomadJob a été supprimée
+		// -------------------
 		if errors.IsNotFound(err) {
-			toDelete = true
+			fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'\n", jobName, jobNamespace)
+			return ctrl.Result{}, nil
 		}
 		return reconcile.Result{}, err
-	}
-
-	jobName := nomadJob.GetAnnotations()["nomad/name"]
-	jobNamespace := nomadJob.GetAnnotations()["nomad/namespace"]
-	fmt.Printf("Le nom du job est : %s\n", jobName)
-	fmt.Printf("Le namespace du job est : %s\n", jobNamespace)
-
-	// -------------------
-	// La ressource NomadJob a été supprimée
-	// -------------------
-	if toDelete == true {
-		fmt.Printf("Le job '%s' a été supprimé dans le namespace '%s'\n", jobName, jobNamespace)
-		// Run 'nomad job stop -purge' command
-		cmd := exec.Command("nomad", "job", "stop", "-purge", "-namespace", jobNamespace, jobName)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		err := cmd.Run()
-		if err != nil {
-			return reconcile.Result{}, err
-		}
-		return reconcile.Result{}, nil
 	}
 
 	// -------------------
 	// La ressource NomadJob doit être créée / modifiée
 	// -------------------
+	jobName := nomadJob.Spec.JobName
+	jobNamespace := nomadJob.Spec.JobNamespace
+	fmt.Printf("Le nom du job est : %s\n", jobName)
+	fmt.Printf("Le namespace du job est : %s\n", jobNamespace)
+
+	// if toDelete == true {
+	// 	// Run 'nomad job stop -purge' command
+	// 	cmd := exec.Command("nomad", "job", "stop", "-purge", "-namespace", jobNamespace, jobName)
+	// 	cmd.Stdout = os.Stdout
+	// 	cmd.Stderr = os.Stderr
+	// 	err := cmd.Run()
+	// 	if err != nil {
+	// 		return reconcile.Result{}, err
+	// 	}
+	// 	return reconcile.Result{}, nil
+	// }
+
 	fmt.Printf("Le job '%s' a été crée/modifé dans le namespace '%s'\n", jobName, jobNamespace)
 
 	// Extract jobHCL from the NomadJob spec

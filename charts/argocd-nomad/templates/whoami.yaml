@@ -3,10 +3,9 @@ apiVersion: nomad.asytech.com/v1
 kind: NomadJob
 metadata:
   name: whoami-test-001
-  annotations:
-    nomad/name: whoami-001
-    nomad/namespace: default
 spec:
+  jobName: whoami-001
+  jobNamespace: default
   jobHCL: |
     job "whoami-001" {
       datacenters = ["dc1"]
@@ -26,10 +25,9 @@ apiVersion: nomad.asytech.com/v1
 kind: NomadJob
 metadata:
   name: whoami-test-002
-  annotations:
-    nomad/name: whoami-001
-    nomad/namespace: default
 spec:
+  jobName: whoami-001
+  jobNamespace: default
   jobHCL: |
     job "whoami-002" {
       datacenters = ["dc1"]

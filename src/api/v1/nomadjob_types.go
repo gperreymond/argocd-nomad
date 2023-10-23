@@ -28,6 +28,10 @@ type NomadJobSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
+	// The name of nomad job, use for delete the job.
+	JobName string `json:"jobName,omitempty"`
+	// The namespace in nomad where to deploy the job.
+	JobNamespace string `json:"jobNamespace,omitempty"`
 	// The job content in hcl of nomad job.
 	JobHCL string `json:"jobHCL,omitempty"`
 }
