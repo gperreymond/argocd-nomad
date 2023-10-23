@@ -7,7 +7,7 @@ spec:
   - name: nomad
     type: webservice
     properties:
-      image: hashicorp/nomad:1.14
+      image: hashicorp/nomad:1.4
     traits:
     - type: scaler
       properties:
