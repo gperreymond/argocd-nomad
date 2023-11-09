@@ -10,9 +10,15 @@ data:
       group "web" {
         count = 1
         network {
+          mode = "bridge"
           port "http" {
             to = 80
           }
+        }
+        service {
+          provider = "nomad"
+          name = "whoami-http"
+          port = "http"
         }
         task "whoami" {
           driver = "docker"
@@ -23,10 +29,6 @@ data:
           resources {
             cpu    = 500
             memory = 256
-          }
-          service {
-            name = "whoami-http"
-            port = "http"
           }
         }
       }
