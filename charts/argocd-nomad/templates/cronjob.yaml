@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nomad-job-apply
+spec:
+  schedule: '*/5 * * * *'
+  jobTemplate:
+    successfulJobsHistoryLimit: 0
+    failedJobsHistoryLimit: 3
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: nomad
+            image: hashicorp/nomad:1.6.3
+            imagePullPolicy: Always
+            env:
+            - name: NOMAD_ADDR
+              value: http://192.168.1.35:4646
+            args:
+            - job
+            - run
+            - /etc/whoami/job.hcl
+            volumeMounts:
+            - name: whoami-config-volume
+              mountPath: /etc/whoami
+          restartPolicy: Never
+          volumes:
+          - name: whoami-config-volume
+            configMap:
+              name: whoami-config
