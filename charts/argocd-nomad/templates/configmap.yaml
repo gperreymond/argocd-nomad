@@ -9,16 +9,10 @@ data:
       type        = "service"
       group "web" {
         count = 1
-        network {
-          port "http" {
-            to = 80
-          }
-        }
         task "whoami" {
           driver = "docker"
           config {
             image = "traefik/whoami:v1.10"
-            port = "http"
           }
           resources {
             cpu    = 500
@@ -26,7 +20,7 @@ data:
           }
           service {
             name = "whoami-http"
-            port = "http"
+            port = 80
           }
         }
       }
