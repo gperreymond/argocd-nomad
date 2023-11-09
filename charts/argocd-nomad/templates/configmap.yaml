@@ -10,7 +10,6 @@ data:
       group "web" {
         count = 1
         network {
-          mode = "bridge"
           port "http" {
             to = 80
           }
