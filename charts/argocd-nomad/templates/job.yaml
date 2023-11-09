@@ -12,7 +12,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: NOMAD_ADDR
-          value: http://localhost:4646
+          value: http://192.168.1.35:4646
         args:
         - system
         - gc
