@@ -4,9 +4,9 @@ metadata:
   name: nomad-job-apply
 spec:
   schedule: '*/5 * * * *'
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 3
   jobTemplate:
-    successfulJobsHistoryLimit: 0
-    failedJobsHistoryLimit: 3
     spec:
       template:
         spec:
