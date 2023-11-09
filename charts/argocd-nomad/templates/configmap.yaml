@@ -9,17 +9,24 @@ data:
       type        = "service"
       group "web" {
         count = 1
+        network {
+          mode = "bridge"
+          port "http" {
+            to = 80
+          }
+        }
         task "whoami" {
           driver = "docker"
           config {
-            image = "containous/whoami"
+            image = "traefik/whoami:v1.10"
+            port = "http"
           }
           resources {
             cpu    = 500
             memory = 256
           }
           service {
-            name = "whoami"
+            name = "whoami-http"
             port = "http"
           }
         }
