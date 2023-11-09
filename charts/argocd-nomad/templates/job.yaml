@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nomad-job-apply
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: nomad
+        image: hashicorp/nomad:1.6.3
+        imagePullPolicy: Always
+        env:
+        - name: NOMAD_ADDR
+          value: http://localhost:4646
+        args:
+        - system gc
+      restartPolicy: Never
+  backoffLimit: 1
