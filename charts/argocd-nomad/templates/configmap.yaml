@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: whoami-config
+data:
+  job.hcl: |
+    job "whoami" {
+      datacenters = ["dc1"]
+      type        = "service"
+      group "web" {
+        count = 1
+        task "whoami" {
+          driver = "docker"
+          config {
+            image = "containous/whoami"
+          }
+          resources {
+            cpu    = 500
+            memory = 256
+          }
+          service {
+            name = "whoami"
+            port = "http"
+          }
+        }
+      }
+    }
