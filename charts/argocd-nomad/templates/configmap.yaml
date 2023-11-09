@@ -5,7 +5,7 @@ metadata:
 data:
   job.hcl: |
     job "whoami" {
-      datacenters = ["dc1"]
+      datacenters = ["{{ .Values.datacenter }}"]
       type        = "service"
       group "web" {
         count = 1
@@ -26,8 +26,9 @@ data:
             ports = ["http"]
           }
           resources {
-            cpu    = 500
-            memory = 256
+            cpu    = {{ .Values.resources.cpu }}
+            memory = {{ .Values.resources.memory }}
+            memory_max = {{ .Values.resources.memory_max }}
           }
         }
       }
