@@ -14,7 +14,7 @@ data:
         count = 1
         network {
           {{- range .Values.services }}
-          {{-if eq .provider "nomad" }}
+          {{- if eq .provider "nomad" }}
           port "{{ .name }}" {
             to = {{ .port }}
           }
@@ -22,7 +22,7 @@ data:
           {{- end }}
         }
         {{- range .Values.services }}
-        {{-if eq .provider "nomad" }}
+        {{- if eq .provider "nomad" }}
         service {
           provider = "{{ .provider }}"
           name = "{{ $name }}-{{ .name }}"
