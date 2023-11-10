@@ -1,28 +1,39 @@
+{{- $name = .Values.name -}}
+
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: whoami-config
+  name: {{ $name }}-config
 data:
   job.hcl: |
-    job "whoami" {
+    job "{{ $name }}" {
       datacenters = ["{{ .Values.datacenter }}"]
       type        = "service"
-      group "web" {
+      group "{{ $name }}" {
         count = 1
         network {
-          port "http" {
-            to = 80
+          {{- range .Values.services }}
+          {{-if eq .provider "nomad" }}
+          port "{{ .name }}" {
+            to = {{ .port }}
           }
+          {{- end }}
+          {{- end }}
         }
+        {{- range .Values.services }}
+        {{-if eq .provider "nomad" }}
         service {
-          provider = "nomad"
-          name = "whoami-http"
-          port = "http"
+          provider = "{{ .provider }}"
+          name = "{{ $name }}-{{ .name }}"
+          port = "{{ .name }}"
         }
-        task "whoami" {
+        {{- end }}
+        {{- end }}
+        task "{{ $name }}" {
           driver = "docker"
           config {
-            image = "traefik/whoami:v1.10"
+            image = "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             ports = ["http"]
           }
           resources {
