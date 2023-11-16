@@ -13,8 +13,8 @@ metadata:
   name: nomad-server-cert
 spec:
   secretName: nomad-server-tls
-  duration: 2160h # 90 days
-  renewBefore: 360h # 15 days
+  duration: 2160h0m0s # 90 days
+  renewBefore: 360h0m0s # 15 days
   commonName: nomad-server
   isCA: true
   privateKey:
@@ -34,8 +34,8 @@ metadata:
   name: nomad-client-cert
 spec:
   secretName: nomad-client-tls
-  duration: 2160h # 90 days
-  renewBefore: 360h # 15 days
+  duration: 2160h0m0s # 90 days
+  renewBefore: 360h0m0s # 15 days
   commonName: nomad-client
   isCA: true
   privateKey:

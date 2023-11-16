@@ -35,7 +35,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: nomad-servers
-  namespace: nomad-system
+  namespace: argocd-system
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
