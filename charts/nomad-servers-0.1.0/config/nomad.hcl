@@ -1,15 +1,13 @@
-region     = "global"
-datacenter = "global"
-data_dir   = "/var/nomad/data"
+data_dir   = "/var/nomad-server/data"
 bind_addr  = "0.0.0.0"
 
 tls {
   http = true
   rpc  = true
 
-  ca_file   = "/ca.cert"
-  cert_file = "/tls.crt"
-  key_file  = "/tls.key"
+  ca_file   = "/etc/nomad-server/certs/ca.cert"
+  cert_file = "/etc/nomad-server/certs/tls.crt"
+  key_file  = "/etc/nomad-server/certs/tls.key"
 
   verify_server_hostname = true
   verify_https_client    = false
@@ -24,7 +22,6 @@ ports {
 server {
   enabled          = true
   bootstrap_expect = 1
-  encrypt          = "mw4m3LcGW3cKb3MKoF2QH3l1nLS1B5hzLh7mPNB5W+o="
 }
 
 client {
@@ -33,11 +30,6 @@ client {
 
 ui {
   enabled = true
-  label {
-    text             = "Global Cluster"
-    background_color = "yellow"
-    text_color       = "#000000"
-  }
 }
 
 telemetry {

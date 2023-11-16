@@ -50,6 +50,11 @@ spec:
     targetRevision: master
     helm:
       releaseName: nomad-servers
+      valueFiles:
+        - values.yaml
+      values: |
+        region: europe
+        datacenter: development
   destination:
     server: https://kubernetes.default.svc
     namespace: nomad-system
