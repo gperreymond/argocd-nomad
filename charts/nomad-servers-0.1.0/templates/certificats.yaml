@@ -26,8 +26,6 @@ spec:
     name: selfsigned-nomad-issuer
     kind: ClusterIssuer
     group: cert-manager.io
-  usages:
-    - server auth
 
 ---
 apiVersion: cert-manager.io/v1
@@ -38,9 +36,9 @@ spec:
   secretName: nomad-client-certs
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
-  commonName: server.{{ .Values.region }}.nomad
+  commonName: client.{{ .Values.region }}.nomad
   dnsNames:
-  - 'server.{{ .Values.region }}.nomad'
+  - 'client.{{ .Values.region }}.nomad'
   isCA: true
   privateKey:
     size: 2048
@@ -49,5 +47,3 @@ spec:
     name: selfsigned-nomad-issuer
     kind: ClusterIssuer
     group: cert-manager.io
-  usages:
-    - client auth
