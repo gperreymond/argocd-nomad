@@ -48,13 +48,13 @@ spec:
           readOnly: true
         - name: nomad-server-data
           mountPath: /var/nomad-server/data
-  volumes:
-  - name: nomad-server-config
-    configMap:
-      name: nomad-server-config
-  - name: nomad-server-tls
-    secret:
-      secretName: nomad-server-tls
+    volumes:
+    - name: nomad-server-config
+      configMap:
+        name: nomad-server-config
+    - name: nomad-server-tls
+      secret:
+        secretName: nomad-server-tls
   volumeClaimTemplates:
   - metadata:
       name: nomad-server-data
