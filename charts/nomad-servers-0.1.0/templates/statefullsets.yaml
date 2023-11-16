@@ -46,7 +46,7 @@ spec:
         - name: certs-volume
           mountPath: /etc/nomad-server/certs
           readOnly: true
-        - name: nomad-data
+        - name: nomad-server-data
           mountPath: /var/nomad-server/data
   volumes:
   - name: config-volume
@@ -57,7 +57,7 @@ spec:
       secretName: nomad-server-tls
   volumeClaimTemplates:
   - metadata:
-      name: nonomad-server-data
+      name: nomad-server-data
     spec:
       accessModes: ['ReadWriteOnce']
       storageClassName: standard
