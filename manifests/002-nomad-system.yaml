@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nomad-system
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: nomad-system
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Setup nomad servers
+  sourceRepos:
+  - '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: nomad-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+    name: in-cluster

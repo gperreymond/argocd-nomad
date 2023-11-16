@@ -1,7 +1,4 @@
 nomad 1.6.2
-kubebuilder 3.12.0
-golang 1.21.1
 kind 0.20.0
 kubectl 1.27.0
 helm 3.13.1
-vela 1.9.6
