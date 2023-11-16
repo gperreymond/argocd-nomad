@@ -16,6 +16,9 @@ spec:
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
   commonName: server.{{ .Values.datacenter }}.nomad
+  dnsNames:
+    - 'server.{{ .Values.datacenter }}.nomad'
+    - '*.name'
   isCA: true
   privateKey:
     size: 2048
