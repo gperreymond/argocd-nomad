@@ -23,7 +23,7 @@ spec:
         - "-config=/etc/nomad-server/config/nomad.hcl"
         - "-dc={{ .Values.datacenter }}"
         - "-region={{ .Values.region }}"
-        - "-advertise=$(POD_IP)"
+        - "-bind=$(POD_IP)"
         env:
         - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
           value: 'true'
