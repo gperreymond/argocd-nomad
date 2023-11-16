@@ -29,3 +29,27 @@ spec:
   - namespace: kube-system
     server: https://kubernetes.default.svc
     name: in-cluster
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nomad-servers
+  namespace: nomad-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: nomad-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://github.com/gperreymond/argocd-nomad.git
+    path: charts/nomad-servers-0.0.1
+    targetRevision: master
+    helm:
+      releaseName: nomad-servers
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nomad-system
