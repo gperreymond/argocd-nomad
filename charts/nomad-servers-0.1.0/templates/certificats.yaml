@@ -16,6 +16,8 @@ spec:
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
   commonName: server.{{ .Values.region }}.nomad
+  dnsNames:
+  - 'server.{{ .Values.region }}.nomad'
   isCA: true
   privateKey:
     size: 2048
@@ -37,6 +39,8 @@ spec:
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
   commonName: server.{{ .Values.region }}.nomad
+  dnsNames:
+  - 'server.{{ .Values.region }}.nomad'
   isCA: true
   privateKey:
     size: 2048
