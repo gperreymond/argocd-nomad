@@ -18,10 +18,19 @@ spec:
       containers:
       - name: nomad
         image: hashicorp/nomad:1.6.3
-        args: ['agent', '-config=/etc/nomad-server/config/nomad.hcl', '-dc={{ .Values.datacenter }}', '-region={{ .Values.region }}']
+        args:
+        - "agent"
+        - "-config=/etc/nomad-server/config/nomad.hcl"
+        - "-dc={{ .Values.datacenter }}"
+        - "-region={{ .Values.region }}"
+        - "-advertise=$(POD_IP)"
         env:
         - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
           value: 'true'
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         ports:
         - name: http
           containerPort: 4646
