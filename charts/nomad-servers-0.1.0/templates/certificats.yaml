@@ -10,9 +10,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: nomad-server-cert
+  name: nomad-server-certs
 spec:
-  secretName: nomad-server-tls
+  secretName: nomad-server-certs
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
   commonName: nomad-server
@@ -31,9 +31,9 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: nomad-client-cert
+  name: nomad-client-certs
 spec:
-  secretName: nomad-client-tls
+  secretName: nomad-client-certs
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
   commonName: nomad-client

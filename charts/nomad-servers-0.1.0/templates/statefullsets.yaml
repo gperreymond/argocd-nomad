@@ -43,21 +43,21 @@ spec:
         - name: nomad-server-config
           mountPath: /etc/nomad-server/config
           readOnly: true
-        - name: nomad-server-tls
+        - name: nomad-server-certs
           mountPath: /etc/nomad-server/certs
           readOnly: true
-        - name: nomad-server-data
+        - name: data
           mountPath: /var/nomad-server/data
     volumes:
     - name: nomad-server-config
       configMap:
         name: nomad-server-config
-    - name: nomad-server-tls
+    - name: nomad-server-certs
       secret:
-        secretName: nomad-server-tls
+        secretName: nomad-server-certs
   volumeClaimTemplates:
   - metadata:
-      name: nomad-server-data
+      name: data
     spec:
       accessModes: ['ReadWriteOnce']
       storageClassName: standard
