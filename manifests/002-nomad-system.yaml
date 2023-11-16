@@ -46,7 +46,7 @@ spec:
       selfHeal: true
   source:
     repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/nomad-servers-0.0.1
+    path: charts/nomad-servers-0.1.0
     targetRevision: master
     helm:
       releaseName: nomad-servers
