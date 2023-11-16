@@ -20,7 +20,7 @@ spec:
         image: hashicorp/nomad:1.6.3
         args: ['agent', '-config=/etc/nomad-server/config/nomad.hcl', '-dc={{ .Values.datacenter }}', '-region={{ .Values.region }}']
         env:
-          name: NOMAD_SKIP_DOCKER_IMAGE_WARN
+        - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
           value: 'true'
         ports:
         - name: http
