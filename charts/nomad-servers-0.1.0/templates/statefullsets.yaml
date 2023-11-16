@@ -18,7 +18,9 @@ spec:
       containers:
       - name: nomad
         image: hashicorp/nomad:1.6.3
-        args: ['agent', '-config=/var/nomad-server/config/nomad.hcl', '-dc={{ .Values.datacenter }}', '-region={{ .Values.region }}']
+        args: ['agent', '-config=/etc/nomad-server/config/nomad.hcl', '-dc={{ .Values.datacenter }}', '-region={{ .Values.region }}']
+        enviroment:
+          NOMAD_SKIP_DOCKER_IMAGE_WARN: 'true'
         ports:
         - name: http
           containerPort: 4646
