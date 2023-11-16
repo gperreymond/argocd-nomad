@@ -40,19 +40,19 @@ spec:
             cpu: '1'
             memory: 512Mi
         volumeMounts:
-        - name: config-volume
+        - name: nomad-server-config
           mountPath: /etc/nomad-server/config
           readOnly: true
-        - name: certs-volume
+        - name: nomad-server-tls
           mountPath: /etc/nomad-server/certs
           readOnly: true
         - name: nomad-server-data
           mountPath: /var/nomad-server/data
   volumes:
-  - name: config-volume
+  - name: nomad-server-config
     configMap:
       name: nomad-server-config
-  - name: certs-volume
+  - name: nomad-server-tls
     secret:
       secretName: nomad-server-tls
   volumeClaimTemplates:
