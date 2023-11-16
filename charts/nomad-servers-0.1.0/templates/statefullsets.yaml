@@ -57,7 +57,6 @@ spec:
           name: nomad-server-config
       - name: nomad-server-certs
         secret:
-          defaultMode: '420'
           secretName: nomad-server-certs
   volumeClaimTemplates:
   - metadata:
