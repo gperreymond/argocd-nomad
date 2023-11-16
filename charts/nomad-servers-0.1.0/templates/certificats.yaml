@@ -15,7 +15,7 @@ spec:
   secretName: nomad-server-certs
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
-  commonName: nomad-server
+  commonName: server.{{ .Values.datacenter }}.nomad
   isCA: true
   privateKey:
     size: 2048
@@ -36,7 +36,7 @@ spec:
   secretName: nomad-client-certs
   duration: 2160h0m0s # 90 days
   renewBefore: 360h0m0s # 15 days
-  commonName: nomad-client
+  commonName: server.{{ .Values.datacenter }}.nomad
   isCA: true
   privateKey:
     size: 2048
