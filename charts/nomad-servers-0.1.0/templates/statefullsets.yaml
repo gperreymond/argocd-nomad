@@ -10,6 +10,7 @@ spec:
     matchLabels:
       app: nomad-server
   replicas: {{ $replicas  }}
+  serviceName: nomad-server
   template:
     metadata:
       labels:
@@ -84,14 +85,13 @@ spec:
         requests:
           storage: 5Gi
 
-{{- range $i := until $replicas  }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nomad-server-{{ $i }}
+  name: nomad-server
   labels:
-    name: nomad-server-{{ $i }}
+    name: nomad-server
 spec:
   ports:
   - name: http
@@ -102,5 +102,3 @@ spec:
     protocol: 'TCP'
   selector:
     app: nomad-server
-    podOrdinalIndex: "{{ $i }}"
-{{- end }}
