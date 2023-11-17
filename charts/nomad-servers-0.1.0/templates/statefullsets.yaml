@@ -10,7 +10,6 @@ spec:
     matchLabels:
       app: nomad-server
   replicas: {{ $replicas  }}
-  serviceName: nomad-server
   template:
     metadata:
       labels:
@@ -85,13 +84,14 @@ spec:
         requests:
           storage: 5Gi
 
+{{- range $i := until $replicas  }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nomad-server
+  name: nomad-server-{{ $i }}
   labels:
-    name: nomad-server
+    name: nomad-server-{{ $i }}
 spec:
   ports:
   - name: http
@@ -102,3 +102,5 @@ spec:
     protocol: 'TCP'
   selector:
     app: nomad-server
+    statefulset.kubernetes.io/pod-name: nomad-server-{{ $i }}
+{{- end }}
