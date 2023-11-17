@@ -21,13 +21,6 @@ ports {
 
 server {
   enabled          = true
-  bootstrap_expect = 1
-}
-
-server_join {
-  retry_join = [ "nomad-server.nomad-system" ]
-  retry_max = 3
-  retry_interval = "15s"
 }
 
 client {
