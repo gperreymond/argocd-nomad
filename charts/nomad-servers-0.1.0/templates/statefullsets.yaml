@@ -26,7 +26,7 @@ spec:
         - "-dc={{ .Values.datacenter }}"
         - "-region={{ .Values.region }}"
         - "-bind=$(POD_IP)"
-        - "-bootstrap-expect=${{ .Values.bootstrap }}"
+        - "-bootstrap-expect={{ .Values.bootstrap }}"
         - "-retry-max=5"
         - "-retry-interval=10s"
         {{- range $i := until $replicas  }}
