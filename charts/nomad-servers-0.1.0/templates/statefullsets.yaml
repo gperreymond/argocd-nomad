@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: nomad-server
   replicas: {{ $replicas  }}
-  serviceName: nomad-server
+  serviceName: nomad-server-http
   template:
     metadata:
       labels:
@@ -89,9 +89,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nomad-server
+  name: nomad-server-http
   labels:
-    name: nomad-server
+    name: nomad-server-http
 spec:
   ports:
   - name: http
