@@ -5,6 +5,12 @@ metadata:
   name: nomad-system
 
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: consul-system
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -23,6 +29,9 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
+  - namespace: nomad-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
   - namespace: nomad-system
     server: https://kubernetes.default.svc
     name: in-cluster
@@ -46,7 +55,7 @@ spec:
       selfHeal: true
   source:
     repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/nomad-servers-0.1.0
+    path: charts/nomad-servers-1.7.0-beta.2
     targetRevision: master
     helm:
       releaseName: nomad-servers
@@ -59,3 +68,33 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: nomad-system
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: consul-servers
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: nomad-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://github.com/gperreymond/argocd-nomad.git
+    path: charts/consul-servers-1.15.4
+    targetRevision: master
+    helm:
+      releaseName: consul-servers
+      valueFiles:
+        - values.yaml
+      values: |
+        region: europe
+        datacenter: development
+        bootstrap: 1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: consul-system
