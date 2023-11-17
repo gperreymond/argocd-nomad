@@ -83,17 +83,37 @@ spec:
       prune: true
       selfHeal: true
   source:
-    repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/consul-server-1.15.4
-    targetRevision: master
+    repoURL: https://helm.releases.hashicorp.com
+    chart: consul
+    targetRevision: 1.3.0
     helm:
-      releaseName: consul-server
-      valueFiles:
-        - values.yaml
-      values: |
-        region: europe
-        datacenter: development
-        bootstrap: 1
+      values: |-
+        global:
+          enabled: true
+          datacenter: "${var.datacenter}"
+          name: "consul-${var.datacenter}"
+          gossipEncryption:
+            autoGenerate: true
+          acls:
+            manageSystemACLs: true
+          metrics:
+            enabled: true
+            enableAgentMetrics: true
+            enableTelemetryCollector: true
+          logJSON: true
+        ui:
+          enabled: true
+          metrics:
+            enabled: true
+        syncCatalog:
+          enabled: true
+          default: false
+          toConsul: true
+          toK8S: false
+        server:
+          replicas: 3
+          bootstrapExpect: 1
+          connect: true
   destination:
     server: https://kubernetes.default.svc
     namespace: consul-system
