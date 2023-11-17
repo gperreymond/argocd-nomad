@@ -14,12 +14,11 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: nomad-system
+  name: hashistack-system
   namespace: argocd-system
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  description: Setup nomad servers
   sourceRepos:
   - '*'
   namespaceResourceWhitelist:
@@ -43,22 +42,22 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nomad-servers
+  name: nomad-server
   namespace: argocd-system
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: nomad-system
+  project: hashistack-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
   source:
     repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/nomad-servers-1.7.0-beta.2
+    path: charts/nomad-server-1.7.0-beta.2
     targetRevision: master
     helm:
-      releaseName: nomad-servers
+      releaseName: nomad-server
       valueFiles:
         - values.yaml
       values: |
@@ -73,22 +72,22 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: consul-servers
+  name: consul-server
   namespace: argocd-system
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: nomad-system
+  project: hashistack-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
   source:
     repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/consul-servers-1.15.4
+    path: charts/consul-server-1.15.4
     targetRevision: master
     helm:
-      releaseName: consul-servers
+      releaseName: consul-server
       valueFiles:
         - values.yaml
       values: |
