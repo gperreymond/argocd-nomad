@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: nomad-server
   serviceName: nomad-server
-  replicas: {{ $replicas  }}
+  replicas: {{ $replicas | int  }}
   template:
     metadata:
       labels:
