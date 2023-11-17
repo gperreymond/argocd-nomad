@@ -29,9 +29,6 @@ spec:
         - "-bootstrap-expect={{ .Values.bootstrap }}"
         - "-retry-max=5"
         - "-retry-interval=10s"
-        # {{- range $i := until $replicas  }}
-        - "-retry-join=nomad-server-http.nomad-system.svc.cluster.local"
-        # {{- end }}
         env:
         - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
           value: 'true'
