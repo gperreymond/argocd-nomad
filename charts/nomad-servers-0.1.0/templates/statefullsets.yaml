@@ -103,9 +103,6 @@ spec:
   - name: serf-tcp
     port: 4648
     protocol: 'TCP'
-  - name: serf-udp
-    port: 4648
-    protocol: 'UDP'
   selector:
     app: nomad-server
     statefulset.kubernetes.io/pod-name: nomad-server-{{ $i }}
