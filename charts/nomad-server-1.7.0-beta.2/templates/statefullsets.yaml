@@ -1,6 +1,6 @@
 {{- $replicas := .Values.bootstrap | int -}}
 
-----
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
