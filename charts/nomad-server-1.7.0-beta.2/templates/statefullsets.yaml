@@ -1,5 +1,11 @@
 {{- $replicas := .Values.bootstrap | int -}}
 
+----
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nomad-server
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -18,6 +24,7 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
+      serviceAccountName: nomad-server
       terminationGracePeriodSeconds: 10
       containers:
       - name: nomad
