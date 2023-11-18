@@ -26,6 +26,7 @@ spec:
         app: nomad-server-{{ $i }}
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/connect-service-upstreams: 'consul.svc:8501'
     spec:
       serviceAccountName: nomad-server-{{ $i }}
       terminationGracePeriodSeconds: 10
