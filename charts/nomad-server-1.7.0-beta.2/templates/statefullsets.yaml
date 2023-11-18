@@ -1,6 +1,6 @@
 {{- $bootstrap := .Values.bootstrap | int -}}
-{{- $datacenter := .Values.datacenter  -}}
-{{- $region := .Values.region  -}}
+{{- $datacenter := .Values.datacenter -}}
+{{- $region := .Values.region -}}
 
 {{- range $i := until $bootstrap  }}
 ---
