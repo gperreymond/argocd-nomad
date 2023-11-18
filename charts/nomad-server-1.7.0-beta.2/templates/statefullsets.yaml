@@ -1,4 +1,4 @@
-{{- $replicas := .Values.bootstrap -}}
+{{- $replicas := .Values.bootstrap | int -}}
 
 ---
 apiVersion: apps/v1
