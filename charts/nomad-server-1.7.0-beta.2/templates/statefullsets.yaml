@@ -8,9 +8,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: nomad-server-{{ $i }}
-{{- end }}
 
-{{- range $i := until $bootstrap  }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -29,7 +27,7 @@ spec:
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
-      serviceAccountName: name: nomad-server-{{ $i }}
+      serviceAccountName: nomad-server-{{ $i }}
       terminationGracePeriodSeconds: 10
       containers:
       - name: nomad
