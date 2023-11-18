@@ -1,18 +1,6 @@
 data_dir   = "/var/nomad-server/data"
 bind_addr  = "0.0.0.0"
 
-tls {
-  http = true
-  rpc  = true
-
-  ca_file   = "/etc/nomad-server/certs/ca.crt"
-  cert_file = "/etc/nomad-server/certs/tls.crt"
-  key_file  = "/etc/nomad-server/certs/tls.key"
-
-  verify_server_hostname = true
-  verify_https_client    = false
-}
-
 ports {
   http = 4646
   rpc  = 4647

@@ -160,7 +160,7 @@ spec:
       values: |
         region: europe
         datacenter: development
-        bootstrap: 1
+        bootstrap: 3
   destination:
     server: https://kubernetes.default.svc
     namespace: nomad-system
