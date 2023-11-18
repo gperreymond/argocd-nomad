@@ -1,4 +1,4 @@
-{{- $replicas := .Values.bootstrap | int -}}
+{{- $bootstrap := .Values.bootstrap | int -}}
 
 ---
 apiVersion: v1
@@ -6,21 +6,22 @@ kind: ServiceAccount
 metadata:
   name: nomad-server
 
+{{- range $i := until $bootstrap  }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: nomad-server
+  name: nomad-server-{{ $i }}
 spec:
   selector:
     matchLabels:
-      app: nomad-server
-  replicas: {{ $replicas  }}
-  serviceName: nomad-server-http
+      app: nomad-server-{{ $i }}
+  replicas: 1
+  serviceName: nomad-server-{{ $i }}
   template:
     metadata:
       labels:
-        app: nomad-server
+        app: nomad-server-{{ $i }}
       annotations:
         consul.hashicorp.com/connect-inject: 'true'
     spec:
@@ -79,3 +80,4 @@ spec:
       resources:
         requests:
           storage: 5Gi
+{{- end }}

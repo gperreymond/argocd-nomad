@@ -1,10 +1,14 @@
+{{- $bootstrap := .Values.bootstrap | int -}}
+
+
+{{- range $i := until $bootstrap  }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nomad-server
+  name: nomad-server-{{ $i }}
   labels:
-    name: nomad-server
+    name: nomad-server-{{ $i }}
 spec:
   ports:
   - name: http
@@ -17,4 +21,5 @@ spec:
     port: 4648
     protocol: 'TCP'
   selector:
-    app: nomad-server
+    app: nomad-server-{{ $i }}
+{{- end }}
