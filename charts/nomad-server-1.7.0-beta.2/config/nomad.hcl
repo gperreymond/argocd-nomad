@@ -21,9 +21,6 @@ ports {
 
 server {
   enabled          = true
-  retry_join = [
-    "provider=k8s namespace=nomad-system label_selector=\"app=nomad-server\""
-  ]
 }
 
 client {

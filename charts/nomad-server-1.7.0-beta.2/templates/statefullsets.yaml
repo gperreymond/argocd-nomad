@@ -1,4 +1,4 @@
-{{- $replicas := mul .Values.bootstrap 3 | int -}}
+{{- $replicas := .Values.bootstrap -}}
 
 ---
 apiVersion: apps/v1
@@ -105,6 +105,7 @@ metadata:
   name: nomad-server-{{ $i }}
   labels:
     name: nomad-server-{{ $i }}
+    consul.hashicorp.com/connect-inject: true
 spec:
   ports:
   - name: http
