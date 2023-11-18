@@ -1,4 +1,6 @@
 {{- $bootstrap := .Values.bootstrap | int -}}
+{{- $datacenter := .Values.datacenter  -}}
+{{- $region := .Values.region  -}}
 
 ---
 apiVersion: v1
@@ -33,9 +35,9 @@ spec:
         args:
         - "agent"
         - "-config=/etc/nomad-server/config/nomad.hcl"
-        - "-dc={{ .Values.datacenter }}"
-        - "-region={{ .Values.region }}"
-        - "-bootstrap-expect={{ .Values.bootstrap }}"
+        - "-dc={{ $datacenter }}"
+        - "-region={{ $region }}"
+        - "-bootstrap-expect={{ $bootstrap }}"
         - "-retry-max=5"
         - "-retry-interval=10s"
         env:
