@@ -23,6 +23,7 @@ metadata:
   name: nomad-server-{{ $i }}
   labels:
     name: nomad-server-{{ $i }}
+  annotations:
     consul.hashicorp.com/connect-inject: 'true'
 spec:
   ports:
