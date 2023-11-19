@@ -20,7 +20,10 @@ ui {
 }
 
 consul {
-  address = "127.0.0.1:8501"
+  ssl = true
+  auto_advertise      = true
+  server_auto_join    = true
+  client_auto_join    = true
 }
 
 telemetry {
