@@ -19,13 +19,6 @@ ui {
   enabled = true
 }
 
-consul {
-  ssl = true
-  auto_advertise      = true
-  server_auto_join    = true
-  client_auto_join    = true
-}
-
 telemetry {
   publish_allocation_metrics = true
   publish_node_metrics       = true

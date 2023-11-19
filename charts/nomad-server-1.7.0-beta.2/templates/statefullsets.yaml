@@ -25,7 +25,7 @@ spec:
       labels:
         app: nomad-server-{{ $i }}
       annotations:
-        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/service-sync: 'true'
     spec:
       serviceAccountName: nomad-server-{{ $i }}
       terminationGracePeriodSeconds: 10
