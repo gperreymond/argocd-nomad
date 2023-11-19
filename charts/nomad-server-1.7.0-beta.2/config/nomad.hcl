@@ -19,6 +19,10 @@ ui {
   enabled = true
 }
 
+consul {
+  address = "consul-server-consul-server.consul-system:8501"
+}
+
 telemetry {
   publish_allocation_metrics = true
   publish_node_metrics       = true
