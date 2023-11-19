@@ -1,5 +1,0 @@
-apiVersion: v2
-name: nomad-servers
-home: https://...
-type: application
-version: 1.0.0

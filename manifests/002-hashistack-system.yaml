@@ -2,19 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: vault-system
-
----
-apiVersion: v1
-kind: Namespace
-metadata:
   name: consul-system
-
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: nomad-system
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -34,45 +22,12 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
-  - namespace: vault-system
-    server: https://kubernetes.default.svc
-    name: in-cluster
   - namespace: consul-system
-    server: https://kubernetes.default.svc
-    name: in-cluster
-  - namespace: nomad-system
     server: https://kubernetes.default.svc
     name: in-cluster
   - namespace: kube-system
     server: https://kubernetes.default.svc
     name: in-cluster
-
-# ---
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: vault-server
-#   namespace: argocd-system
-#   finalizers:
-#   - resources-finalizer.argocd.argoproj.io
-# spec:
-#   project: hashistack-system
-#   syncPolicy:
-#     automated:
-#       prune: true
-#       selfHeal: true
-#   source:
-#     repoURL: https://helm.releases.hashicorp.com
-#     chart: vault
-#     targetRevision: 0.27.0
-#     helm:
-#       values: |-
-#         server:
-#           auditStorage:
-#             enabled: true
-#   destination:
-#     server: https://kubernetes.default.svc
-#     namespace: vault-system
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -134,33 +89,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: consul-system
-
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: nomad-server
-  namespace: argocd-system
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
-spec:
-  project: hashistack-system
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-  source:
-    repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/nomad-server-1.7.0-beta.2
-    targetRevision: master
-    helm:
-      releaseName: nomad-server
-      valueFiles:
-        - values.yaml
-      values: |
-        region: europe
-        datacenter: development
-        bootstrap: 1
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: nomad-system
