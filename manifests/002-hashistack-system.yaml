@@ -79,6 +79,9 @@ spec:
           default: false
           toConsul: true
           toK8S: false
+          extraLabels:
+            vector-logs/enabled: 'true'
+            vector-logs/name: 'consul-sync-catalog'
         server:
           replicas: 1
           bootstrapExpect: 1

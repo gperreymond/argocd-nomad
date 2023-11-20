@@ -129,6 +129,13 @@ spec:
     helm:
       values: |-
         server:
+          extraArgs:
+            envflag.enable: "true"
+            envflag.prefix: VM_
+            loggerFormat: json
+            loggerFormat: json
+            logIngestedRows: "true"
+            logNewStreams: "true"
           podAnnotations:
             prometheus.io/scrape: 'true'
             prometheus.io/path: '/metrics'
@@ -197,10 +204,12 @@ spec:
                 if .namespace=="consul-system" {
                   .level = .trace.@level
                   .message = .trace.@message
+                  .@timestamp = .trace.@timestamp
                 }
                 if .namespace=="argocd-system" {
                   .level = .trace.level
                   .message = .trace.msg
+                  .@timestamp = .trace.time
                 }
                 .trace = encode_json(.trace)
           sinks:
