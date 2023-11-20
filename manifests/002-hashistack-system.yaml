@@ -51,6 +51,7 @@ spec:
       values: |-
         global:
           enabled: true
+          logJSON: true
           datacenter: development
           gossipEncryption:
             autoGenerate: true
@@ -65,8 +66,6 @@ spec:
             enabled: true
             enableAgentMetrics: true
             enableTelemetryCollector: true
-          logLevel: INFO
-          logJSON: true
         terminatingGateways:
           enabled: true
         meshGateway:
@@ -84,6 +83,11 @@ spec:
           replicas: 1
           bootstrapExpect: 1
           connect: true
+          extraConfig: |
+            {"log_json": true, "log_level": "info"}
+          extraLabels:
+            vector-logs/enabled: 'true'
+            vector-logs/name: 'consul-server'
         client:
           enabled: false
   destination:

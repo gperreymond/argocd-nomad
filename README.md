@@ -11,3 +11,5 @@ $ kubectl apply --filename manifests/002-hashistack-system.yaml
 ```
 
 * https://developer.hashicorp.com/consul/docs/k8s/annotations-and-labels
+* https://github.com/VictoriaMetrics/helm-charts/tree/master/charts
+* https://artifacthub.io/packages/helm/vector/vector

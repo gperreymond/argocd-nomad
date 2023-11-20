@@ -11,6 +11,18 @@ metadata:
   name: cert-manager
 
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: victoriametrics-system
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vector-system
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -30,6 +42,12 @@ spec:
     kind: '*'
   destinations:
   - namespace: cert-manager
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: victoriametrics-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: vector-system
     server: https://kubernetes.default.svc
     name: in-cluster
   - namespace: kube-system
@@ -60,3 +78,154 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: victoria-metrics-single
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: datacenter-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://victoriametrics.github.io/helm-charts
+    chart: victoria-metrics-single
+    targetRevision: 0.9.12
+    helm:
+      values: |-
+        server:
+          persistentVolume:
+            enabled: true
+          scrape:
+            enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: victoriametrics-system
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: victoria-logs-single
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: datacenter-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://victoriametrics.github.io/helm-charts
+    chart: victoria-logs-single
+    targetRevision: 0.3.4
+    helm:
+      values: |-
+        server:
+          podAnnotations:
+            prometheus.io/scrape: 'true'
+            prometheus.io/path: '/metrics'
+            prometheus.io/port: '9428'
+          statefulSet:
+            enabled: true
+          persistentVolume:
+            enabled: true
+        fluent-bit:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: victoriametrics-system
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vector-logs
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: datacenter-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://helm.vector.dev
+    chart: vector
+    targetRevision: 0.29.0
+    helm:
+      values: |-
+        role: Agent
+        service:
+          enabled: false
+        serviceHeadless:
+          enabled: false
+        persistence:
+          enabled: true
+        customConfig:
+          data_dir: /vector-data-dir
+          api:
+            enabled: false
+          sources:
+            kubernetes:
+              type: kubernetes_logs
+              extra_label_selector: "vector-logs/enabled=true"
+          transforms:
+            remap_kubernetes:
+              type: remap
+              inputs: [kubernetes]
+              source: |-
+                .NEWLOG.message = .message
+                .NEWLOG.host = .kubernetes.pod_node_name
+                .NEWLOG.namespace = .kubernetes.pod_namespace
+                .NEWLOG.name = .kubernetes.pod_labels."vector-logs/name"
+                .NEWLOG.pod_name = .kubernetes.pod_name
+                .NEWLOG.container_name = .kubernetes.container_name
+                .NEWLOG.container_image = .kubernetes.container_image
+                . = .NEWLOG
+                .@timestamp = now()
+                .trace, err = parse_json(.message)
+                # remplacer les "if" par des "routes"
+                if .namespace=="consul-system" {
+                  .level = .trace.@level
+                  .message = .trace.@message
+                }
+                if .namespace=="argocd-system" {
+                  .level = .trace.level
+                  .message = .trace.msg
+                }
+                .trace = encode_json(.trace)
+          sinks:
+            stdout:
+              type: console
+              inputs: [remap_kubernetes]
+              encoding:
+                codec: json
+            vlogs:
+              type: elasticsearch
+              inputs: [remap_kubernetes]
+              endpoints: [ "http://victoria-logs-single-server.victoriametrics-system:9428/insert/elasticsearch/" ]
+              mode: bulk
+              api_version: v8
+              compression: gzip
+              healthcheck:
+                enabled: false
+              request:
+                headers:
+                  AccountID: "0"
+                  ProjectID: "0"
+              query:
+                _msg_field: "message"
+                _time_field: "@timestamp"
+                _stream_fields: "level,host,namespace,name,pod_name,container_name,container_image"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vector-system

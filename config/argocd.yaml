@@ -1,5 +1,12 @@
 crds:
   install: true
+global:
+  logging:
+    format: json
+server:
+  podLabels:
+    vector-logs/enabled: 'true'
+    vector-logs/name: 'argocd-server'
 configs:
   params:
     "server.disable.auth": true
