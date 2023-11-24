@@ -65,6 +65,7 @@ spec:
           metrics:
             enabled: true
             enableAgentMetrics: true
+            enableGatewayMetrics: true
             enableTelemetryCollector: true
         terminatingGateways:
           enabled: true
@@ -79,9 +80,17 @@ spec:
           default: false
           toConsul: true
           toK8S: false
+          k8sAllowNamespaces: ['victoriametrics-system']
           extraLabels:
             vector-logs/enabled: 'true'
             vector-logs/name: 'consul-sync-catalog'
+        connectInject:
+          enabled: true
+          extraLabels:
+            vector-logs/enabled: 'true'
+            vector-logs/name: 'consul-connect-inject'
+          metrics:
+            defaultEnableMerging: true
         server:
           replicas: 1
           bootstrapExpect: 1
