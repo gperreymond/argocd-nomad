@@ -1,0 +1,68 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+    dashboard:
+      enabled: true
+    ports:
+      traefik:
+        expose: true
+    logs:
+      general:
+        format: json
+      access:
+        enabled: true
+        format: json
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-route
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`traefik.docker.localhost`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))'
+    kind: Rule
+    services:
+    - kind: Service
+      name: traefik
+      namespace: kube-system
+      port: 9000
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-route
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`argocd.docker.localhost`)'
+    kind: Rule
+    priority: 10
+    services:
+    - kind: Service
+      name: argocd-server
+      namespace: argocd-system
+      port: 80
+  - match: 'Host(`argocd.docker.localhost`) && Headers(`Content-Type`, `application/grpc`)'
+    kind: Rule
+    priority: 11
+    services:
+    - kind: Service
+      name: argocd-server
+      namespace: argocd-system
+      port: 80
+      scheme: h2c

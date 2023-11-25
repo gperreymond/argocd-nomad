@@ -9,4 +9,5 @@ server:
     vector-logs/name: 'argocd-server'
 configs:
   params:
+    "server.insecure": true
     "server.disable.auth": true

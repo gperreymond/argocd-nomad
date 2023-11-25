@@ -283,3 +283,39 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: vector-system
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: victoria-metrics-route
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`victoria-metrics.docker.localhost`)'
+    kind: Rule
+    services:
+    - kind: Service
+      name: victoria-metrics-single-server
+      namespace: victoriametrics-system
+      port: 8428
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: victoria-logs-route
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`victoria-logs.docker.localhost`)'
+    kind: Rule
+    services:
+    - kind: Service
+      name: victoria-logs-single-server
+      namespace: victoriametrics-system
+      port: 9428

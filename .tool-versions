@@ -1,5 +1,6 @@
 nomad 1.6.3
 consul 1.17.0
-kind 0.20.0
 kubectl 1.27.0
 helm 3.13.1
+python 3.8.0
+k3d 5.6.0

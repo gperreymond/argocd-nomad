@@ -92,9 +92,16 @@ spec:
           metrics:
             defaultEnableMerging: true
         server:
-          replicas: 1
-          bootstrapExpect: 1
+          replicas: 2
+          bootstrapExpect: 2
           connect: true
+          exposeGossipAndRPCPorts: true
+          exposeService:
+            enabled: true
+            type: NodePort
+            nodePort:
+              https: 8501
+              serf: 8301
           extraConfig: |
             {"log_json": true, "log_level": "info"}
           extraLabels:
