@@ -30,12 +30,11 @@ spec:
         - name: shared-volume
           mountPath: /shared
       - name: 'create-kubernetes-secret'
-        image: 'bitnami/kubectl:1.27.8'
+        image: 'd3fk/kubectl:v1.27'
         command: ["/bin/sh", "-c"]
         args:
           - |
             ls /shared
-            sudo chmod 0777 /shared/*.pem
             kubectl create secret generic nomad-tls \
               --from-file=/shared/nomad-agent-ca.pem \
               --from-file=/shared/nomad-agent-ca-key.pem
