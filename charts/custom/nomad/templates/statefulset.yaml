@@ -13,6 +13,7 @@ spec:
       labels:
         app: nomad
     spec:
+      serviceAccountName: nomad-server
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
