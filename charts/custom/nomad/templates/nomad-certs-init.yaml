@@ -35,17 +35,9 @@ spec:
         args:
           - |
             ls /shared
-            namespace="nomad-system"
-            # ----------------------------------
-            secret_name="nomad-agent-ca"
-            if kubectl get secret "${secret_name}" -n "${namespace}" &> /dev/null; then
-              output=$(cat /shared/${secret_name}.pem)
-              kubectl create secret generic ${secret_name} --from-literal=data="$output"
-            else
-              echo " ${secret_name} already exists"
-            fi
-            exit 1
-            # ----------------------------------
+            kubectl create secret generic nomad-tls \
+              --from-file=/shared/nomad-agent-ca.pem \
+              --from-file=/shared/nomad-agent-ca-key.pem
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
