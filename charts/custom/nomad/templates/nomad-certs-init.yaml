@@ -35,7 +35,7 @@ spec:
         args:
           - |
             ls /shared
-            chmod 0777 /shared/*.pem
+            sudo chmod 0777 /shared/*.pem
             kubectl create secret generic nomad-tls \
               --from-file=/shared/nomad-agent-ca.pem \
               --from-file=/shared/nomad-agent-ca-key.pem
