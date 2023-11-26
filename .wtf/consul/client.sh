@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl cluster-info --context kind-local-tooling
+kubectl cluster-info --context k3d-dev-local
 
 rm -rf certs
 mkdir -p certs

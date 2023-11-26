@@ -1,0 +1,26 @@
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nomad
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: hashistack-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://github.com/gperreymond/argocd-nomad.git
+    path: charts/custom/nomad
+    targetRevision: master
+    helm:
+      releaseName: nomad
+      valueFiles:
+        - values.yaml
+      values: |-
+        image:
+          tag: 1.7.0-beta.2

@@ -5,6 +5,12 @@ metadata:
   name: consul-system
 
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nomad-system
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -23,6 +29,9 @@ spec:
     kind: '*'
   destinations:
   - namespace: consul-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: nomad-system
     server: https://kubernetes.default.svc
     name: in-cluster
   - namespace: kube-system
@@ -68,9 +77,9 @@ spec:
             enableGatewayMetrics: true
             enableTelemetryCollector: true
         terminatingGateways:
-          enabled: true
+          enabled: false
         meshGateway:
-          enabled: true
+          enabled: false
         ui:
           enabled: true
           metrics:
@@ -95,13 +104,9 @@ spec:
           replicas: 2
           bootstrapExpect: 2
           connect: true
-          exposeGossipAndRPCPorts: true
+          exposeGossipAndRPCPorts: false
           exposeService:
-            enabled: true
-            type: NodePort
-            nodePort:
-              https: 8501
-              serf: 8301
+            enabled: false
           extraConfig: |
             {"log_json": true, "log_level": "info"}
           extraLabels:
@@ -112,3 +117,34 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: consul-system
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: consul
+  namespace: consul-system
+spec:
+  insecureSkipVerify: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: consul-route
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`consul.docker.localhost`)'
+    kind: Rule
+    services:
+    - kind: Service
+      name: consul-server-consul-ui
+      namespace: consul-system
+      scheme: https
+      serversTransport: consul
+      port: 443
+
+---

@@ -6,14 +6,13 @@ server    = false
 leave_on_terminate = true
 
 retry_join = [
-  "192.168.200.2",
-  "192.168.200.4"
+  "172.19.0.2"
 ]
 
-encrypt = "5MqpAPSrmDeYbYYXBbYNf/Qy2H9Z3Dd9X8VwySZUtgM="
+encrypt = "QtOqjxF9w4Vd0IxZIx0t93L1wauqH7YF+srq7iMkkBM="
 acl {
   tokens {
-    default = "d9cb81dc-948a-b14c-f9a2-a818cbcd149e"
+    default = "9c12ae0e-8f15-76b5-e189-dc4f08c6b976"
   }
 }
 

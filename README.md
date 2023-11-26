@@ -22,6 +22,7 @@ $ kubectl apply --filename manifests/002-hashistack-system.yaml
 * https://argocd.docker.localhost/
 * https://victoria-metrics.docker.localhost/
 * https://victoria-logs.docker.localhost/
+* https://consul.docker.localhost/
 
 
 ### Documentations

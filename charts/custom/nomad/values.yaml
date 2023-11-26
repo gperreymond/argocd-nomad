@@ -1,0 +1,4 @@
+image:
+  repository: hashicorp/nomad
+  pullPolicy: IfNotPresent
+  tag: TO_SET
