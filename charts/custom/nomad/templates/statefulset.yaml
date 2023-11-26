@@ -5,6 +5,9 @@ metadata:
 spec:
   serviceName: nomad
   replicas: {{ .Values.bootstrap_expect }}
+  selector:
+    matchLabels:
+      app: nomad
   template:
     metadata:
       labels:
