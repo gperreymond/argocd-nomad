@@ -28,7 +28,7 @@ spec:
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         args:
         - 'agent'
-        {{- range $i := until .Values.bootstrap_expect }}
+        {{- range $i := until (int .Values.bootstrap_expect) }}
         - '-retry-join=nomad-{{ $i }}.nomad.$(NAMESPACE).svc.cluster.local'
         {{- end }}
         - '-config=/etc/nomad/nomad.d/server.hcl'
