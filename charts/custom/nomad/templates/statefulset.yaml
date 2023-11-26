@@ -23,8 +23,6 @@ spec:
                 values:
                 - nomad
             topologyKey: kubernetes.io/hostname
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: nomad
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
