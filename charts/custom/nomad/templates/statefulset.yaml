@@ -28,8 +28,8 @@ spec:
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         args:
         - 'agent'
-        {{- range .Values.bootstrap_expect }}
-        - '-retry-join=nomad-{{ . }}.nomad.$(NAMESPACE).svc.cluster.local'
+        {{- range $i := until .Values.bootstrap_expect }}
+        - '-retry-join=nomad-{{ $i }}.nomad.$(NAMESPACE).svc.cluster.local'
         {{- end }}
         - '-config=/etc/nomad/nomad.d/server.hcl'
         - '-encrypt=$(GOSSIP_ENCRYPTION_KEY)'
