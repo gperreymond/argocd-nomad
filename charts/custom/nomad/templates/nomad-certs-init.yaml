@@ -20,7 +20,9 @@ spec:
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         command: ["/bin/sh", "-c"]
         args:
-          -|-
+          - /bin/sh
+          - -c
+          - |
             nomad tls ca create
             mv nomad-agent-ca.pem /shared
             mv nomad-agent-ca-key.pem /shared
@@ -31,7 +33,7 @@ spec:
         image: 'bitnami/kubectl:1.27.8'
         command: ["/bin/sh", "-c"]
         args:
-          -|-
+          - |
             ls /shared
             output=$(cat /shared/nomad-agent-ca.pem)
             kubectl create secret generic nomad-tls-secret --from-literal=ca-cert="$output"
