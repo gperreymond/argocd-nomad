@@ -4,7 +4,6 @@ metadata:
   name: nomad-config
 data:
   server.hcl: |
-    bind_addr = "0.0.0.0"
     data_dir = "/var/lib/nomad"
 
     acl {
@@ -56,3 +55,4 @@ data:
       rpc = "{{ `{{ GetInterfaceIP \"eth0\" }}` }}"
       serf = "{{ `{{ GetInterfaceIP \"eth0\" }}` }}"
     }
+    bind_addr = "0.0.0.0"
