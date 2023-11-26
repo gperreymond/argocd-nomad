@@ -39,10 +39,10 @@ spec:
             # ----------------------------------
             secret_name="nomad-agent-ca"
             if kubectl get secret "${secret_name}" -n "${namespace}" &> /dev/null; then
-              echo " ${secret_name} already exists"
-            else
               output=$(cat /shared/${secret_name}.pem)
               kubectl create secret generic ${secret_name} --from-literal=data="$output"
+            else
+              echo " ${secret_name} already exists"
             fi
             exit 1
             # ----------------------------------
