@@ -55,7 +55,15 @@ spec:
         args:
           - |
             ls -l /shared
-            kubectl create secret generic nomad-tls-certs --from-file=/shared
+            kubectl create secret generic nomad-tls-certs \
+              --from-file=/shared/nomad-agent-ca.pem \
+              --from-file=/shared/nomad-agent-ca-key.pem \
+              --from-file=/shared/{{ .Values.region }}-server-nomad.pem \
+              --from-file=/shared/{{ .Values.region }}-server-nomad-key.pem \
+              --from-file=/shared/{{ .Values.region }}-client-nomad.pem \
+              --from-file=/shared/{{ .Values.region }}-client-nomad-key.pem \
+              --from-file=/shared/{{ .Values.region }}-cli-nomad.pem \
+              --from-file=/shared/{{ .Values.region }}-cli-nomad-key.pem
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
