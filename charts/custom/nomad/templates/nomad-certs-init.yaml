@@ -16,13 +16,6 @@ spec:
       volumes:
       - name: shared-volume
         emptyDir: {}
-      initContainers:
-      - name: permission-init
-        image: alpine
-        command: ["sh", "-c", "chmod -R 777 /shared"]
-        volumeMounts:
-        - name: shared-volume
-          mountPath: /shared
       containers:
       - name: 'generate-tls-ca'
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
@@ -42,6 +35,7 @@ spec:
         args:
           - |
             ls /shared
+            chmod 0777 /shared/*.pem
             kubectl create secret generic nomad-tls \
               --from-file=/shared/nomad-agent-ca.pem \
               --from-file=/shared/nomad-agent-ca-key.pem
