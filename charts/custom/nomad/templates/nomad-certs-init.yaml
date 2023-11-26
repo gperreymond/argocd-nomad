@@ -23,21 +23,21 @@ spec:
         args:
           - |
             nomad tls ca create
-            mv nomad-agent-ca.pem /shared
-            mv nomad-agent-ca-key.pem /shared
-            ls -l /shared
+            mv nomad-agent-ca.pem /tmp/shared
+            mv nomad-agent-ca-key.pem /tmp/shared
+            ls -l /tmp/shared
         volumeMounts:
         - name: shared-volume
-          mountPath: /shared
+          mountPath: /tmp/shared
       - name: 'create-kubernetes-secret'
         image: 'bitnami/kubectl:1.27.8'
         command: ["/bin/sh", "-c"]
         args:
           - |
-            ls /shared
+            ls /tmp/shared
             kubectl create secret generic nomad-tls \
-              --from-file=/shared/nomad-agent-ca.pem \
-              --from-file=/shared/nomad-agent-ca-key.pem
+              --from-file=/tmp/shared/nomad-agent-ca.pem \
+              --from-file=/tmp/shared/nomad-agent-ca-key.pem
         volumeMounts:
         - name: shared-volume
-          mountPath: /shared
+          mountPath: /tmp/shared
