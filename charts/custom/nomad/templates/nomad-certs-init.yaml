@@ -16,6 +16,13 @@ spec:
       volumes:
       - name: shared-volume
         emptyDir: {}
+      initContainers:
+      - name: permission-init
+        image: alpine
+        command: ["sh", "-c", "chmod -R 777 /shared"]
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
       containers:
       - name: 'generate-tls-ca'
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
