@@ -9,7 +9,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: nomad-certs-init
+      name: nomad-job-init-certs
     spec:
       restartPolicy: Never
       serviceAccountName: nomad-job-init

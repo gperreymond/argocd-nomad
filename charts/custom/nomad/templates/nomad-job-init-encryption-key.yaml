@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nomad-job-init-encryption-key
+  annotations:
+    'helm.sh/hook': 'pre-install,pre-upgrade'
+    'helm.sh/hook-weight': '-10'
+    'helm.sh/hook-delete-policy': hook-succeeded
+spec:
+  template:
+    metadata:
+      name: nomad-job-init-encryption-key
+    spec:
+      restartPolicy: Never
+      serviceAccountName: nomad-job-init
+      volumes:
+      - name: shared-volume
+        emptyDir: {}
+      initContainers:
+      - name: set-permissions
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            chmod -R 777 /shared
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
+      - name: 'generate-encryption-key'
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            nomad operator keygen > /shared/data
+            mv *.pem /shared
+            chmod -R 777 /shared
+            ls -l /shared
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
+      containers:
+      - name: 'create-kubernetes-secret'
+        image: 'bitnami/kubectl:1.27.8'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            ls -l /shared
+            kubectl create secret generic nomad-encryption-key --from-file=/shared || true
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
