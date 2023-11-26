@@ -23,7 +23,6 @@ data:
       publish_allocation_metrics = true
       publish_node_metrics = true
     }
-    bind_addr = "0.0.0.0"
 
     region = "{{ .Values.region }}"
     datacenter = "{{ .Values.datacenter }}"
