@@ -35,6 +35,7 @@ spec:
             nomad tls ca create
             mv nomad-agent-ca.pem /shared
             mv nomad-agent-ca-key.pem /shared
+            chmod -R 777 /shared
             ls -l /shared
         volumeMounts:
         - name: shared-volume
