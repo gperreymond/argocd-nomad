@@ -44,6 +44,7 @@ spec:
               output=$(cat /shared/${secret_name}.pem)
               kubectl create secret generic ${secret_name} --from-literal=data="$output"
             fi
+            exit 1
             # ----------------------------------
         volumeMounts:
         - name: shared-volume
