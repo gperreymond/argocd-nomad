@@ -36,12 +36,15 @@ spec:
           - |
             ls /shared
             namespace="nomad-system"
+            # ----------------------------------
             secret_name="nomad-agent-ca"
             if kubectl get secret "${secret_name}" -n "${namespace}" &> /dev/null; then
+              echo " ${secret_name} already exists"
             else
               output=$(cat /shared/${secret_name}.pem)
               kubectl create secret generic ${secret_name} --from-literal=data="$output"
             fi
+            # ----------------------------------
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
