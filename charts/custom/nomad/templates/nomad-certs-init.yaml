@@ -12,7 +12,7 @@ spec:
       name: nomad-certs-init
     spec:
       restartPolicy: Never
-      serviceAccountName: nomad-job
+      serviceAccountName: nomad-job-init
       volumes:
       - name: shared-volume
         emptyDir: {}
