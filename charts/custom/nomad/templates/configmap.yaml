@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nomad-config
+data:
+  server.hcl: |
+    bind_addr = "0.0.0.0"
+    data_dir = "/var/lib/nomad"
+
+    region = "{{ .Values.region }}"
+    datacenter = "{{ .Values.datacenter }}"
+    
+    server {
+      enabled = true
+      bootstrap_expect = {{ .Values.bootstrap_expect }}
+    }
+
+    tls {
+      http = true
+      rpc = true
+      verify_server_hostname = true
+      verify_https_client = true
+      ca_file = "nomad-agent-ca.pem"
+      cert_file = "global-server-nomad.pem"
+      key_file  = "global-server-nomad-key.pem"
+    }
