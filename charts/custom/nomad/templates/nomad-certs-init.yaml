@@ -55,7 +55,7 @@ spec:
         args:
           - |
             ls -l /shared
-            kubectl create secret generic nomad-tls-certs -from-file=/shared
+            kubectl create secret generic nomad-tls-certs --from-file=/shared
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
