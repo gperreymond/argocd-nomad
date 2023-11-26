@@ -28,6 +28,10 @@ data:
       enabled = false
     }
 
+    ui {
+      enabled =  true
+    }
+
     tls {
       http = true
       rpc = true
@@ -43,4 +47,3 @@ data:
       rpc = "{{ `{{ GetInterfaceIP \"eth0\" }}` }}"
       serf = "{{ `{{ GetInterfaceIP \"eth0\" }}` }}"
     }
-    bind_addr = "{{ `{{ GetInterfaceIP \"eth0\" }}` }}"

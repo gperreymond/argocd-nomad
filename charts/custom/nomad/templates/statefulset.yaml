@@ -34,6 +34,8 @@ spec:
         - '-config=/etc/nomad/nomad.d/server.hcl'
         - '-encrypt=$(GOSSIP_ENCRYPTION_KEY)'
         env:
+        - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
+          value: 'true'
         - name: GOSSIP_ENCRYPTION_KEY
           valueFrom:
             secretKeyRef:
