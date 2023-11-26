@@ -13,8 +13,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: post-install-job
-        image: 'alpine:3.3'
+      - name: 'generate ca'
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         command:
-        - '/bin/sleep'
-        - '10'
+        - 'nomad tls create ca'
