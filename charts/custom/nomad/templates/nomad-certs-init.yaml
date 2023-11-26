@@ -30,7 +30,7 @@ spec:
         - name: shared-volume
           mountPath: /shared
       - name: 'create-kubernetes-secret'
-        image: 'd3fk/kubectl:v1.27'
+        image: 'bitnami/kubectl:1.27.8'
         command: ["/bin/sh", "-c"]
         args:
           - |
