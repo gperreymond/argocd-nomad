@@ -13,7 +13,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: 'generate ca'
+      - name: 'generate-tls-ca'
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         command:
         - 'nomad tls create ca'
