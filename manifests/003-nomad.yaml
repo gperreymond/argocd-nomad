@@ -24,3 +24,6 @@ spec:
       values: |-
         image:
           tag: 1.7.0-beta.2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nomad-system
