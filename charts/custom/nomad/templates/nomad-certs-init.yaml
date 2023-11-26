@@ -47,6 +47,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
+            sleep 10s
             ls -l /shared
             kubectl create secret generic nomad-tls-certs --from-file=/shared
         volumeMounts:
