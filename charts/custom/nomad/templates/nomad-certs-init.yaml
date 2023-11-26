@@ -12,6 +12,7 @@ spec:
       name: nomad-certs-init
     spec:
       restartPolicy: Never
+      serviceAccountName: nomad-job
       volumes:
       - name: shared-volume
         emptyDir: {}
@@ -20,12 +21,11 @@ spec:
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         command: ["/bin/sh", "-c"]
         args:
-          - /bin/sh
-          - -c
           - |
             nomad tls ca create
             mv nomad-agent-ca.pem /shared
             mv nomad-agent-ca-key.pem /shared
+            ls -l /shared
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
