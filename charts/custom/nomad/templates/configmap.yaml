@@ -7,12 +7,25 @@ data:
     bind_addr = "0.0.0.0"
     data_dir = "/var/lib/nomad"
 
+    log_level = "INFO"
+    log_json = true
+
+    leave_on_interrupt = false
+    leave_on_terminate = true
+    autopilot {
+      cleanup_dead_servers = true
+    }
+
     region = "{{ .Values.region }}"
     datacenter = "{{ .Values.datacenter }}"
     
     server {
       enabled = true
       bootstrap_expect = {{ .Values.bootstrap_expect }}
+    }
+
+    client {
+      enabled = false
     }
 
     tls {
@@ -22,5 +35,12 @@ data:
       verify_https_client = false
       ca_file = "/etc/nomad/tls/nomad-agent-ca.pem"
       cert_file = "/etc/nomad/tls/global-server-nomad.pem"
-      key_file  = "/etc/nomad/tls/global-server-nomad-key.pem"
+      key_file = "/etc/nomad/tls/global-server-nomad-key.pem"
     }
+
+    advertise {
+      http = "{{ GetInterfaceIP \"eth0\" }}"
+      rpc = "{{ GetInterfaceIP \"eth0\" }}"
+      serf = "{{ GetInterfaceIP \"eth0\" }}"
+    }
+    bind_addr = "{{ GetInterfaceIP \"eth0\" }}"
