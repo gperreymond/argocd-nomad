@@ -22,6 +22,8 @@ spec:
       valueFiles:
         - values.yaml
       values: |-
+        region: global
+        datacenter: development
         image:
           tag: 1.7.0-beta.2
   destination:

@@ -15,6 +15,7 @@ $ .wtf/cluster/prepare.sh
 $ kubectl apply --filename manifests/000-traefik-system.yaml
 $ kubectl apply --filename manifests/001-datacenter-system.yaml
 $ kubectl apply --filename manifests/002-hashistack-system.yaml
+$ kubectl apply --filename manifests/003-nomad.yaml
 ```
 ### Web URLs
 

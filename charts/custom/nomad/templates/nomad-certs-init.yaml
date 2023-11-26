@@ -33,6 +33,7 @@ spec:
         args:
           - |
             nomad tls ca create
+            nomad tls cert create -server -region {{ .Values.region }}
             mv nomad-agent-ca.pem /shared
             mv nomad-agent-ca-key.pem /shared
             chmod -R 777 /shared
