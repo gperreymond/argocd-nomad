@@ -14,11 +14,16 @@ data:
     log_level = "INFO"
     log_json = true
 
-    leave_on_interrupt = false
     leave_on_terminate = true
-    autopilot {
-      cleanup_dead_servers = true
+
+    telemetry {
+      collection_interval = "1s"
+      disable_hostname = true
+      prometheus_metrics = true
+      publish_allocation_metrics = true
+      publish_node_metrics = true
     }
+    bind_addr = "0.0.0.0"
 
     region = "{{ .Values.region }}"
     datacenter = "{{ .Values.datacenter }}"
@@ -26,6 +31,7 @@ data:
     server {
       enabled = true
       bootstrap_expect = {{ .Values.bootstrap_expect }}
+      rejoin_after_leave = true
     }
 
     client {
