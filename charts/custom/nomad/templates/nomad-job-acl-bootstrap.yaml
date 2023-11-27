@@ -34,6 +34,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
+            sleep 30 # change that with /alive on nomad server
             uuid=$(curl -s https://www.uuidgenerator.net/api/version4)
             echo $uuid > /shared/bootstrap.token
             chmod -R 777 /shared
