@@ -32,7 +32,6 @@ spec:
         args:
           - |
             nomad operator gossip keyring generate > /shared/data
-            mv *.pem /shared
             chmod -R 777 /shared
         volumeMounts:
         - name: shared-volume

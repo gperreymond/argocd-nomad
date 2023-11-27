@@ -1,76 +1,76 @@
-# apiVersion: batch/v1
-# kind: Job
-# metadata:
-#   name: nomad-job-acl-bootstrap
-#   annotations:
-#     'helm.sh/hook': 'post-install,post-upgrade'
-#     'helm.sh/hook-weight': '10'
-#     'helm.sh/hook-delete-policy': hook-succeeded
-# spec:
-#   template:
-#     metadata:
-#       name: nomad-job-acl-bootstrap
-#     spec:
-#       restartPolicy: Never
-#       serviceAccountName: nomad-job-init
-#       volumes:
-#       - name: shared-volume
-#         emptyDir: {}
-#       - name: nomad-tls
-#         secret:
-#           secretName: nomad-tls-certs
-#       initContainers:
-#       - name: set-permissions
-#         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-#         command: ["/bin/sh", "-c"]
-#         args:
-#           - |
-#             chmod -R 777 /shared
-#         volumeMounts:
-#         - name: shared-volume
-#           mountPath: /shared
-#       - name: generate-token
-#         image: 'bitnami/git:2.43.0'
-#         command: ["/bin/sh", "-c"]
-#         args:
-#           - |
-#             uuid=$(curl -s https://www.uuidgenerator.net/api/version4)
-#             echo $uuid > /shared/bootstrap.token
-#             chmod -R 777 /shared
-#         volumeMounts:
-#         - name: shared-volume
-#           mountPath: /shared
-#       - name: 'run-acl-bootstrap'
-#         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-#         command: ["/bin/sh", "-c"]
-#         args:
-#           - |
-#             nomad acl bootstrap \
-#               -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local:4646 \
-#               -region={{ .Values.region }} \
-#               -ca-cert=/certs/nomad-agent-ca.pem \
-#               -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
-#               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
-#               /shared/bootstrap.token || true
-#             sleep 30
-#             chmod -R 777 /shared
-#         env:
-#         - name: NAMESPACE
-#           valueFrom:
-#             fieldRef:
-#               fieldPath: metadata.namespace
-#         volumeMounts:
-#         - name: shared-volume
-#           mountPath: /shared
-#         - name: nomad-tls
-#           mountPath: /certs
-#       containers:
-#       - name: 'create-kubernetes-secret'
-#         image: 'bitnami/kubectl:1.27.8'
-#         command: ["/bin/sh", "-c"]
-#         args:
-#           - |
-#             kubectl create secret generic nomad-acl-bootstrap --from-file=/shared || true
-#         volumeMounts:
-#         - name: shared-volume
-#           mountPath: /shared
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nomad-job-acl-bootstrap
+  annotations:
+    'helm.sh/hook': 'post-install,post-upgrade'
+    'helm.sh/hook-weight': '10'
+    # 'helm.sh/hook-delete-policy': hook-succeeded
+spec:
+  template:
+    metadata:
+      name: nomad-job-acl-bootstrap
+    spec:
+      restartPolicy: Never
+      serviceAccountName: nomad-job-init
+      volumes:
+      - name: shared-volume
+        emptyDir: {}
+      - name: nomad-tls
+        secret:
+          secretName: nomad-tls-certs
+      initContainers:
+      - name: set-permissions
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            chmod -R 777 /shared
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
+      - name: generate-token
+        image: 'bitnami/git:2.43.0'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            uuid=$(curl -s https://www.uuidgenerator.net/api/version4)
+            echo $uuid > /shared/bootstrap.token
+            chmod -R 777 /shared
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
+      - name: 'run-acl-bootstrap'
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            nomad acl bootstrap \
+              -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local:4646 \
+              -region={{ .Values.region }} \
+              -ca-cert=/certs/nomad-agent-ca.pem \
+              -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
+              -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
+              /shared/bootstrap.token || true
+            sleep 30
+            chmod -R 777 /shared
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
+        - name: nomad-tls
+          mountPath: /certs
+      containers:
+      - name: 'create-kubernetes-secret'
+        image: 'bitnami/kubectl:1.27.8'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            kubectl create secret generic nomad-acl-bootstrap --from-file=/shared || true
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
