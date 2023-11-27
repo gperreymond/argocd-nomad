@@ -57,6 +57,7 @@ spec:
         args:
           - |
             ls -l /shared
+            sleep 30
             kubectl create secret generic nomad-acl-bootstrap --from-file=/shared || true
         volumeMounts:
         - name: shared-volume
