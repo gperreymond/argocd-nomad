@@ -37,7 +37,6 @@ spec:
             nomad tls cert create -cli -region {{ .Values.region }}
             mv *.pem /shared
             chmod -R 777 /shared
-            ls -l /shared
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
@@ -47,7 +46,6 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            ls -l /shared
             kubectl create secret generic nomad-tls-certs --from-file=/shared || true
         volumeMounts:
         - name: shared-volume

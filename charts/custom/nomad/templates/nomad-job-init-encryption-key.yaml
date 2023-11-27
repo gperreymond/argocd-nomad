@@ -34,7 +34,6 @@ spec:
             nomad operator gossip keyring generate > /shared/data
             mv *.pem /shared
             chmod -R 777 /shared
-            ls -l /shared
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
@@ -44,7 +43,6 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            ls -l /shared
             kubectl create secret generic nomad-encryption-key --from-file=/shared || true
         volumeMounts:
         - name: shared-volume

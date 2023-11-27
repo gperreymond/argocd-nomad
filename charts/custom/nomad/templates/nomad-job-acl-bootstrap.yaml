@@ -34,15 +34,15 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            ls -l /certs
             nomad acl bootstrap \
               -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local \
+              -region={{ .Values.region }} \
+              -tls-skip-verify \
               -ca-cert=/certs/nomad-agent-ca.pem \
               -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
               -json > /shared/data.json
             chmod -R 777 /shared
-            ls -l /shared
         env:
         - name: NAMESPACE
           valueFrom:
