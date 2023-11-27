@@ -45,7 +45,7 @@ spec:
         args:
           - |
             nomad acl bootstrap \
-              -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local \
+              -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local:4646 \
               -region={{ .Values.region }} \
               -tls-skip-verify \
               -ca-cert=/certs/nomad-agent-ca.pem \
@@ -53,8 +53,6 @@ spec:
               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
               /shared/bootstrap.token || true
             chmod -R 777 /shared
-            cat /shared/bootstrap.token
-            sleep 30
         env:
         - name: NAMESPACE
           valueFrom:
