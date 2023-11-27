@@ -24,7 +24,7 @@ spec:
       values: |-
         region: global
         datacenter: development
-        replicas: 3
+        replicas: 1
         bootstrap_expect: 1
         image:
           tag: 1.7.0-beta.2

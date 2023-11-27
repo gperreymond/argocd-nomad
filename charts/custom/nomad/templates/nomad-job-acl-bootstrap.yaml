@@ -34,7 +34,8 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            openssl rand -base64 128 > /shared/bootstrap.token
+            uuid=$(uuidgen)
+            echo $uuid > /shared/bootstrap.token
             chmod -R 777 /shared
         volumeMounts:
         - name: shared-volume
@@ -47,7 +48,6 @@ spec:
             nomad acl bootstrap \
               -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local:4646 \
               -region={{ .Values.region }} \
-              -tls-skip-verify \
               -ca-cert=/certs/nomad-agent-ca.pem \
               -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
