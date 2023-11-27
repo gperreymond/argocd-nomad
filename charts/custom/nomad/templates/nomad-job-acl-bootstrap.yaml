@@ -29,12 +29,21 @@ spec:
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
+      - name: generate-token
+        image: 'bitnami/git:2.43.0'
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            openssl rand -base64 128 > /shared/bootstrap.token
+            chmod -R 777 /shared
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /shared
       - name: 'run-acl-bootstrap'
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         command: ["/bin/sh", "-c"]
         args:
           - |
-            openssl rand -base64 128 > /shared/bootstrap.token
             nomad acl bootstrap \
               -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local \
               -region={{ .Values.region }} \
