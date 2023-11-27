@@ -36,9 +36,15 @@ spec:
           - |
             ls -l /certs
             nomad acl bootstrap \
+              -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local \
               -json > /shared/data.json
             chmod -R 777 /shared
             ls -l /shared
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
