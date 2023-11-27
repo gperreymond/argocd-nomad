@@ -6,9 +6,9 @@ data:
   server.hcl: |
     data_dir = "/var/lib/nomad"
 
-    # acl {
-    #   enabled = true
-    # }
+    acl {
+      enabled = true
+    }
 
     log_level = "INFO"
     log_json = true
