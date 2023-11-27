@@ -34,6 +34,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
+            openssl rand -base64 128 > /shared/bootstrap.token
             nomad acl bootstrap \
               -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local \
               -region={{ .Values.region }} \
@@ -41,7 +42,7 @@ spec:
               -ca-cert=/certs/nomad-agent-ca.pem \
               -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
-              -json > /shared/data.json
+              /shared/bootstrap.token || true
             chmod -R 777 /shared
         env:
         - name: NAMESPACE
