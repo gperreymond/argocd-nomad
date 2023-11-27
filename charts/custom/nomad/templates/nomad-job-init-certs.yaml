@@ -55,6 +55,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
+            kubectl delete secret/nomad-tls-certs -n nomad-system || true
             kubectl create secret generic nomad-tls-certs --from-file=/shared || true
         volumeMounts:
         - name: shared-volume
