@@ -34,7 +34,6 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            sleep 30 # change that with /alive on nomad server
             uuid=$(curl -s https://www.uuidgenerator.net/api/version4)
             echo $uuid > /shared/bootstrap.token
             chmod -R 777 /shared
@@ -52,7 +51,8 @@ spec:
               -ca-cert=/certs/nomad-agent-ca.pem \
               -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
-              /shared/bootstrap.token
+              /shared/bootstrap.token || true
+            sleep 30
             chmod -R 777 /shared
         env:
         - name: NAMESPACE
