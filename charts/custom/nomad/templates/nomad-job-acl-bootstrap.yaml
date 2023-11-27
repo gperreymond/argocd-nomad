@@ -44,6 +44,8 @@ spec:
               -client-key=/certs/{{ .Values.region }}-cli-nomad-key.pem \
               /shared/bootstrap.token || true
             chmod -R 777 /shared
+            cat /shared/bootstrap.token
+            sleep 30
         env:
         - name: NAMESPACE
           valueFrom:
