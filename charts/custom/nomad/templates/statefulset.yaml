@@ -4,7 +4,7 @@ metadata:
   name: nomad
 spec:
   serviceName: nomad
-  replicas: {{ .Values.bootstrap_expect }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       app: nomad
@@ -29,7 +29,7 @@ spec:
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         args:
         - 'agent'
-        {{- range $i := until (int .Values.bootstrap_expect) }}
+        {{- range $i := until (int .Values.replicas) }}
         - '-retry-join=nomad-{{ $i }}.nomad.$(NAMESPACE).svc.cluster.local'
         {{- end }}
         - '-config=/etc/nomad/nomad.d/server.hcl'

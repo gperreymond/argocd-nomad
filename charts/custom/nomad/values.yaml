@@ -1,5 +1,6 @@
 region: TO_SET
 datacenter: TO_SET
+replicas: TO_SET
 bootstrap_expect: TO_SET
 
 image:
