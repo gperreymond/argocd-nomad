@@ -14,6 +14,7 @@ data:
     log_json = true
 
     leave_on_terminate = true
+    leave_on_interrupt = true
 
     telemetry {
       collection_interval = "1s"
