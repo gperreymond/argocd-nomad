@@ -35,6 +35,8 @@ spec:
         args:
           - |
             ls -l /certs
+            nomad acl bootstrap \
+              -json > /shared/data.json
             chmod -R 777 /shared
             ls -l /shared
         volumeMounts:
@@ -49,7 +51,7 @@ spec:
         args:
           - |
             ls -l /shared
-            sleep 30
+            kubectl create secret generic nomad-acl-bootstrap --from-file=/shared || true
         volumeMounts:
         - name: shared-volume
           mountPath: /shared
