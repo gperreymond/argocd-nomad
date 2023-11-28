@@ -1,3 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nomad-system
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -31,3 +36,32 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: nomad-system
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: nomad
+  namespace: nomad-system
+spec:
+  insecureSkipVerify: true
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nomad-route
+  namespace: kube-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`nomad.docker.localhost`)'
+    kind: Rule
+    services:
+    - kind: Service
+      name: nomad
+      namespace: nomad-system
+      scheme: https
+      serversTransport: nomad
+      port: 4646
