@@ -11,7 +11,7 @@ kubectl config use-context k3d-dev-local
 kubectl cluster-info --context k3d-dev-local
 
 # secret to verify
-secret_name="nomad-gossip-encryption-key"
+secret_name="nomad-server-gossip-encryption-key"
 namespace="nomad-system"
 
 # -----------------------

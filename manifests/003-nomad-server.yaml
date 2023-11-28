@@ -1,14 +1,8 @@
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: nomad-system
-
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nomad
+  name: nomad-server
   namespace: argocd-system
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -20,10 +14,10 @@ spec:
       selfHeal: true
   source:
     repoURL: https://github.com/gperreymond/argocd-nomad.git
-    path: charts/custom/nomad
+    path: charts/custom/nomad-server
     targetRevision: master
     helm:
-      releaseName: nomad
+      releaseName: nomad-server
       valueFiles:
         - values.yaml
       values: |-
@@ -60,7 +54,7 @@ spec:
     kind: Rule
     services:
     - kind: Service
-      name: nomad
+      name: nomad-server
       namespace: nomad-system
       scheme: https
       serversTransport: nomad

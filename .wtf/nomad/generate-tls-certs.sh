@@ -24,7 +24,7 @@ kubectl config use-context k3d-dev-local
 kubectl cluster-info --context k3d-dev-local
 
 # secret to verify
-secret_name="nomad-tls-certs"
+secret_name="nomad-server-tls-certs"
 namespace="nomad-system"
 
 # -----------------------
@@ -44,7 +44,11 @@ echo ""
 # -----------------------
 
 secret_exists=$(kubectl get secret $secret_name -n $namespace 2>/dev/null)
-dnsnames="-additional-dnsname=nomad.$namespace.svc.cluster.local -additional-dnsname=nomad.docker.localhost"
+dnsnames="-additional-dnsname=nomad.$namespace.svc.cluster.local"
+dnsnames="$dnsnames -additional-dnsname=*.nomad.$namespace.svc.cluster.local"
+dnsnames="$dnsnames -additional-dnsname=nomad.$namespace"
+dnsnames="$dnsnames -additional-dnsname=*.nomad.$namespace"
+dnsnames="$dnsnames -additional-dnsname=nomad.docker.localhost"
 
 if [ -z "$secret_exists" ]; then
     echo "[INFO] secret $secret_name does not exist in namespace $namespace"

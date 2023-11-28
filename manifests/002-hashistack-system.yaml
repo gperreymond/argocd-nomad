@@ -5,6 +5,12 @@ metadata:
   name: consul-system
 
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nomad-system
+  
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
