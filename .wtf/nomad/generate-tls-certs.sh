@@ -20,6 +20,7 @@ fi
 rm -rf certs
 
 # change kubernetes context
+kubectl config use-context k3d-dev-local
 kubectl cluster-info --context k3d-dev-local
 
 # secret to verify

@@ -38,7 +38,7 @@ spec:
         - name: GOSSIP_ENCRYPTION_KEY
           valueFrom:
             secretKeyRef:
-              name: nomad-encryption-key
+              name: nomad-gossip-encryption-key
               key: data
         - name: NAMESPACE
           valueFrom:
