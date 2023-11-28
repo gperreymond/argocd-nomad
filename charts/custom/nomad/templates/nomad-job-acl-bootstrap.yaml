@@ -46,7 +46,7 @@ spec:
         args:
           - |
             nomad acl bootstrap \
-              -address=https://nomad-0.nomad.$(NAMESPACE).svc.cluster.local:4646 \
+              -address=https://nomad.$(NAMESPACE).svc.cluster.local:4646 \
               -region={{ .Values.region }} \
               -ca-cert=/certs/nomad-agent-ca.pem \
               -client-cert=/certs/{{ .Values.region }}-cli-nomad.pem \
