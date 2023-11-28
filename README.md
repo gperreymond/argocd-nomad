@@ -15,6 +15,8 @@ $ .wtf/cluster/prepare.sh
 $ kubectl apply --filename manifests/000-traefik-system.yaml
 $ kubectl apply --filename manifests/001-datacenter-system.yaml
 $ kubectl apply --filename manifests/002-hashistack-system.yaml
+$ .wtf/nomad/generate-gossip-encryption-key.sh
+$ .wtf/nomad/generate-tls-certs.sh -region global
 $ kubectl apply --filename manifests/003-nomad.yaml
 ```
 ### Web URLs
