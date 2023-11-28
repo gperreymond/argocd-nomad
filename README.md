@@ -27,6 +27,7 @@ $ .wtf/nomad/boostrap-server.sh -region global
 * https://victoria-metrics.docker.localhost/
 * https://victoria-logs.docker.localhost/
 * https://consul.docker.localhost/
+* https://nomad.docker.localhost/
 
 
 ### Documentations
