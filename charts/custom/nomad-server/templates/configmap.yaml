@@ -44,7 +44,7 @@ data:
     tls {
       http = true
       rpc = true
-      verify_server_hostname = true
+      verify_server_hostname = false # TODO: need to be true
       verify_https_client = true
       ca_file = "/etc/nomad/tls/nomad-agent-ca.pem"
       cert_file = "/etc/nomad/tls/global-server-nomad.pem"

@@ -32,6 +32,10 @@ $ .wtf/nomad/boostrap-server.sh -region global
 
 ### Documentations
 
+```sh
+$ openssl x509 -in certs/global-server-nomad.pem -text -noou
+```
+
 * https://developer.hashicorp.com/consul/docs/k8s/annotations-and-labels
 * https://github.com/VictoriaMetrics/helm-charts/tree/master/charts
 * https://artifacthub.io/packages/helm/vector/vector

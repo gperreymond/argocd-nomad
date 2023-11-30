@@ -44,10 +44,10 @@ echo ""
 # -----------------------
 
 secret_exists=$(kubectl get secret $secret_name -n $namespace 2>/dev/null)
-dnsnames="-additional-dnsname=nomad.$namespace.svc.cluster.local"
-dnsnames="$dnsnames -additional-dnsname=*.nomad.$namespace.svc.cluster.local"
-dnsnames="$dnsnames -additional-dnsname=nomad.$namespace"
-dnsnames="$dnsnames -additional-dnsname=*.nomad.$namespace"
+dnsnames="-additional-dnsname=nomad-server.$namespace.svc.cluster.local"
+dnsnames="$dnsnames -additional-dnsname=*.nomad-server.$namespace.svc.cluster.local"
+dnsnames="$dnsnames -additional-dnsname=nomad-server.$namespace"
+dnsnames="$dnsnames -additional-dnsname=*.nomad-server.$namespace"
 dnsnames="$dnsnames -additional-dnsname=nomad.docker.localhost"
 
 if [ -z "$secret_exists" ]; then

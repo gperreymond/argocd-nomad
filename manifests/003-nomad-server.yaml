@@ -35,7 +35,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: ServersTransport
 metadata:
-  name: nomad
+  name: nomad-server
   namespace: nomad-system
 spec:
   insecureSkipVerify: true
@@ -44,7 +44,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: nomad-route
+  name: nomad-server-route
   namespace: kube-system
 spec:
   entryPoints:
@@ -57,5 +57,5 @@ spec:
       name: nomad-server
       namespace: nomad-system
       scheme: https
-      serversTransport: nomad
+      serversTransport: nomad-server
       port: 4646
