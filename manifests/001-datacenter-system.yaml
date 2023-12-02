@@ -17,6 +17,12 @@ metadata:
   name: vector-system
 
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reflector-system
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -35,6 +41,9 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
+  - namespace: reflector-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
   - namespace: cert-manager
     server: https://kubernetes.default.svc
     name: in-cluster
@@ -72,6 +81,28 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reflector
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: datacenter-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://emberstack.github.io/helm-charts
+    chart: reflector
+    targetRevision: 7.1.216
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: reflector-system
 
 ---
 apiVersion: argoproj.io/v1alpha1

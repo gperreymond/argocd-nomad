@@ -69,6 +69,9 @@ spec:
           tls:
             enabled: true
             enableAutoEncrypt: true
+            # annotations:
+            #   reflector.v1.k8s.emberstack.com/reflection-allowed: 'true'
+            #   reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: nomad-system
           acls:
             manageSystemACLs: true
           metrics:
@@ -113,14 +116,7 @@ spec:
             vector-logs/enabled: 'true'
             vector-logs/name: 'consul-server'
         client:
-          enabled: true
-          affinity: |
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: node-role.kubernetes.io/master
-                    operator: DoesNotExist
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: consul-system

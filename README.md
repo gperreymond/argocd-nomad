@@ -37,6 +37,7 @@ $ .wtf/nomad/boostrap-server.sh -region global
 $ openssl x509 -in certs/global-server-nomad.pem -text -noou
 ```
 
+* https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
 * https://developer.hashicorp.com/consul/docs/k8s/annotations-and-labels
 * https://github.com/VictoriaMetrics/helm-charts/tree/master/charts
 * https://artifacthub.io/packages/helm/vector/vector

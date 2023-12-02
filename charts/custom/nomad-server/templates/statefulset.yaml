@@ -12,6 +12,9 @@ spec:
     metadata:
       labels:
         app: nomad-server
+      annotations:
+        consul.hashicorp.com/connect-inject: 'true'
+        consul.hashicorp.com/mesh-inject: 'false'
     spec:
       serviceAccountName: nomad-server
       affinity:
