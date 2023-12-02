@@ -2,21 +2,53 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nomad-server-config
+  name: consul-client-config
 data:
-  server.hcl: |
-    data_dir = "/var/lib/nomad"
-
-    acl {
+  client.hcl: |
+    datacenter = "{{ .Values.datacenter }}"
+    data_dir = "/var/lib/consul"
+    server    = false
+    leave_on_terminate = true
+    ports {
+      http = -1
+      https = 8501
+      grpc = -1,
+      grpc_tls = 8502,
+      serf_lan = 8301
+    }
+    verify_incoming_rpc    = false
+    tls {
+      defaults {
+        verify_incoming        = false
+        verify_outgoing        = false
+        verify_server_hostname = false
+        ca_file = "certs/consul-ca.crt"
+      }
+    }
+    auto_encrypt = {
+      tls = true
+    }
+    connect {
       enabled = true
     }
 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nomad-server-config
+data:
+  server.hcl: |
+    region = "{{ .Values.region }}"
+    datacenter = "{{ .Values.datacenter }}"
+    data_dir = "/var/lib/nomad"
+    acl {
+      enabled = true
+    }
     log_level = "INFO"
     log_json = true
-
     leave_on_terminate = true
     leave_on_interrupt = true
-
     telemetry {
       collection_interval = "1s"
       disable_hostname = true
@@ -24,24 +56,17 @@ data:
       publish_allocation_metrics = true
       publish_node_metrics = true
     }
-
-    region = "{{ .Values.region }}"
-    datacenter = "{{ .Values.datacenter }}"
-    
     server {
       enabled = true
       bootstrap_expect = {{ .Values.bootstrap_expect }}
       rejoin_after_leave = true
     }
-
     client {
       enabled = false
     }
-
     ui {
       enabled =  true
     }
-
     tls {
       http = true
       rpc = true
@@ -51,5 +76,4 @@ data:
       cert_file = "/etc/nomad/tls/global-server-nomad.pem"
       key_file = "/etc/nomad/tls/global-server-nomad-key.pem"
     }
-
     bind_addr = "0.0.0.0"

@@ -69,9 +69,6 @@ spec:
           tls:
             enabled: true
             enableAutoEncrypt: true
-            # annotations:
-            #   reflector.v1.k8s.emberstack.com/reflection-allowed: 'true'
-            #   reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: nomad-system
           acls:
             manageSystemACLs: true
           metrics:
@@ -92,7 +89,8 @@ spec:
           default: false
           toConsul: true
           toK8S: false
-          k8sAllowNamespaces: ['victoriametrics-system']
+          k8sAllowNamespaces:
+          - victoriametrics-system
           extraLabels:
             vector-logs/enabled: 'true'
             vector-logs/name: 'consul-sync-catalog'

@@ -32,6 +32,24 @@ spec:
     namespace: nomad-system
 
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: consul-server-consul-ca-cert
+ namespace: nomad-system
+ annotations:
+   reflector.v1.k8s.emberstack.com/reflects: 'consul-system/consul-server-consul-ca-cert'
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: consul-server-consul-gossip-encryption-key
+ namespace: nomad-system
+ annotations:
+   reflector.v1.k8s.emberstack.com/reflects: 'consul-system/consul-server-consul-gossip-encryption-key'
+
+---
 apiVersion: traefik.containo.us/v1alpha1
 kind: ServersTransport
 metadata:

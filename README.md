@@ -16,6 +16,7 @@ $ .wtf/cluster/prepare.sh # waiting for all argocd pods... (2 minutes)
 $ kubectl apply --filename manifests/000-traefik-system.yaml
 $ kubectl apply --filename manifests/001-datacenter-system.yaml
 $ kubectl apply --filename manifests/002-hashistack-system.yaml # waiting for all consul pods... (4 minutes)
+$ .wtf/consul/preprare-reflector.sh
 $ .wtf/nomad/generate-gossip-encryption-key.sh
 $ .wtf/nomad/generate-tls-certs.sh -region global
 $ kubectl apply --filename manifests/003-nomad-server.yaml
