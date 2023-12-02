@@ -6,7 +6,7 @@ server    = false
 leave_on_terminate = true
 
 retry_join = [
-  "172.19.0.2"
+  "consul.docker.localhost"
 ]
 
 encrypt = "QtOqjxF9w4Vd0IxZIx0t93L1wauqH7YF+srq7iMkkBM="
