@@ -114,6 +114,13 @@ spec:
             vector-logs/name: 'consul-server'
         client:
           enabled: false
+          affinity: |
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: node-role.kubernetes.io/master
+                    operator: DoesNotExist
   destination:
     server: https://kubernetes.default.svc
     namespace: consul-system
