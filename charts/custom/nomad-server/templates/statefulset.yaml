@@ -39,6 +39,10 @@ spec:
         - '-config=/etc/nomad/nomad.d/server.hcl'
         - '-encrypt=$(GOSSIP_ENCRYPTION_KEY)'
         env:
+        - name: CONSUL_HTTP_ADDR
+          value: '10.42.2.9:8501'
+        - name: CONSUL_HTTP_SSL
+          value: 'true'
         - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
           value: 'true'
         - name: GOSSIP_ENCRYPTION_KEY
