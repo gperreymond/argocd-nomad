@@ -12,7 +12,6 @@ data:
     }
 
     consul {
-      address = "127.0.0.1:8501"
       ssl = true
       server_service_name = "nomad"
       client_service_name = "nomad-client"
