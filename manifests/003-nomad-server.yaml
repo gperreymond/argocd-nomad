@@ -59,3 +59,9 @@ spec:
       scheme: https
       serversTransport: nomad-server
       port: 4646
+  tls:
+    secretName: nomad-server-tls
+    domains:
+    - main: docker.localhost
+      sans:
+      - nomad.docker.localhost

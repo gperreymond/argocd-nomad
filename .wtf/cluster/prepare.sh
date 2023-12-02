@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # change kubernetes context
-kubectl config use-context k3d-dev-local
+kubectx k3d-dev-local
 kubectl cluster-info --context k3d-dev-local
 
 kubectl create ns argocd-system

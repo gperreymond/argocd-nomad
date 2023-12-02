@@ -20,7 +20,7 @@ fi
 rm -rf certs
 
 # change kubernetes context
-kubectl config use-context k3d-dev-local
+kubectx k3d-dev-local
 kubectl cluster-info --context k3d-dev-local
 
 # secret to verify
@@ -67,20 +67,16 @@ echo $token > certs/bootstrap.token
 # RUN BOOTSTRAP NOMAD
 # -----------------------
 
-tls_secret_name="nomad-tls-certs"
+tls_secret_name="nomad-server-tls-certs"
 # retrieve keys from the secret
 keys=$(kubectl get secret $tls_secret_name -n $namespace -o jsonpath="{.data}" | jq -r 'keys[]')
 # loop through each key and save its value to a file
 echo "[INFO] download certs"
-for key in $keys; do
-    key_replaced="${key//./\\\.}"
-    content=$(kubectl get secret $tls_secret_name -n $namespace -o jsonpath="{.data.${key_replaced}}" | base64 --decode)
-    echo $content > certs/$key
-    echo "[INFO] ... $key downloaded "
-done
-
+kubectl get secret nomad-server-tls-certs -n nomad-system -o json | jq -r '.data."nomad-agent-ca.pem"' | base64 --decode > certs/nomad-agent-ca.pem
+kubectl get secret nomad-server-tls-certs -n nomad-system -o json | jq -r --arg REGION "$region" '.data[$REGION + "-cli-nomad.pem"]' | base64 --decode > certs/$region-cli-nomad.pem
+kubectl get secret nomad-server-tls-certs -n nomad-system -o json | jq -r --arg REGION "$region" '.data[$REGION + "-cli-nomad-key.pem"]' | base64 --decode > certs/$region-cli-nomad-key.pem
 nomad acl bootstrap \
-    -address=https://nomad.docker.localhost:4646 \
+    -address=https://nomad.docker.localhost \
     -region=$region \
     -ca-cert=certs/nomad-agent-ca.pem \
     -client-cert=certs/$region-cli-nomad.pem \

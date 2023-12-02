@@ -20,7 +20,7 @@ fi
 rm -rf certs
 
 # change kubernetes context
-kubectl config use-context k3d-dev-local
+kubectx k3d-dev-local
 kubectl cluster-info --context k3d-dev-local
 
 # secret to verify
@@ -59,6 +59,7 @@ if [ -z "$secret_exists" ]; then
     mkdir certs
     mv *.pem certs
     kubectl create secret generic $secret_name  -n $namespace --from-file=certs
+    kubectl create secret tls nomad-server-tls -n kube-system --cert=certs/global-server-nomad.pem --key=certs/global-server-nomad-key.pem
 else
     echo "[INFO] secret $secret_name exists in namespace $namespace"
 fi
