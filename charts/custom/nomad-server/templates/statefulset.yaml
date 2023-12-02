@@ -14,16 +14,16 @@ spec:
         app: nomad-server
     spec:
       serviceAccountName: nomad-server
-      # affinity:
-      #   podAntiAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #     - labelSelector:
-      #         matchExpressions:
-      #         - key: app
-      #           operator: In
-      #           values:
-      #           - nomad-server
-      #       topologyKey: kubernetes.io/hostname
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - nomad-server
+            topologyKey: kubernetes.io/hostname
       containers:
       - name: nomad-server
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
