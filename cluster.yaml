@@ -2,8 +2,8 @@ apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
   name: dev-local
-servers: 3
-agents: 2
+servers: 1
+agents: 3
 network: k3d-dev-local
 ports:
 - port: '80:80'
