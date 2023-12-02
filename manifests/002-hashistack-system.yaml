@@ -113,7 +113,7 @@ spec:
             vector-logs/enabled: 'true'
             vector-logs/name: 'consul-server'
         client:
-          enabled: false
+          enabled: true
           affinity: |
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
