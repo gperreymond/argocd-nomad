@@ -14,17 +14,7 @@ spec:
         app: nomad-server
     spec:
       serviceAccountName: nomad-server
-      tolerations:
-      - key: node-master
-        operator: DoesNotExist
-        effect: NoSchedule
       affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/master
-                operator: DoesNotExist
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
