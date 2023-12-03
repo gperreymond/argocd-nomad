@@ -89,6 +89,8 @@ spec:
           preStart:
             exec:
               command:
+              - /bin/sh
+              - -c
               - cat /run/secrets/kubernetes.io/serviceaccount/token
           preStop:
             exec:
