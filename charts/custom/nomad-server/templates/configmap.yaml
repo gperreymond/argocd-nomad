@@ -31,7 +31,7 @@ data:
     connect {
       enabled = true
     }
-    retry_join = ["provider=k8s namespace=consul-system label_selector=\"app=consul,component=server\""]
+    retry_join = ["consul-server-consul-server.consul-system:8301"]
     bind_addr      = "0.0.0.0"
     client_addr    = "0.0.0.0"
 
