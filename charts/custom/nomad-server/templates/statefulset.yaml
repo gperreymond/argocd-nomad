@@ -30,6 +30,13 @@ spec:
                 values:
                 - nomad-server
             topologyKey: kubernetes.io/hostname
+      initContainers:
+      - name: consul-login
+        image: 'hashicorp/consul:1.17.0'
+        command: ['/bin/sh', '-c']
+        args:
+        - |
+          cat /run/secrets/kubernetes.io/serviceaccount/token
       containers:
       - name: nomad-server
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
@@ -86,12 +93,6 @@ spec:
               name: consul-server-consul-gossip-encryption-key
               key: key
         lifecycle:
-          preStart:
-            exec:
-              command:
-              - /bin/sh
-              - -c
-              - cat /run/secrets/kubernetes.io/serviceaccount/token
           preStop:
             exec:
               command:
