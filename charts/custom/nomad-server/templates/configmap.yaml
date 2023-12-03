@@ -16,13 +16,15 @@ data:
       grpc_tls = 8502,
       serf_lan = 8301
     }
-    verify_incoming_rpc    = false
     tls {
       defaults {
         verify_incoming        = false
         verify_outgoing        = false
         verify_server_hostname = false
         ca_file = "/etc/consul/tls/tls.crt"
+      }
+      internal {
+        verify_incoming_rpc = false
       }
     }
     auto_encrypt = {
