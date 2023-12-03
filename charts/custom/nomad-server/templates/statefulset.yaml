@@ -34,8 +34,12 @@ spec:
       - name: consul-login
         image: 'hashicorp/consul:1.17.0'
         command: ['/bin/sh', '-c']
+        env:
+        - name: CONSUL_HTTP_SSL
+          value: 'true'
         args:
         - |
+          cat /etc/consul/ca-cert/tls.crt
           consul login -method 'consul-server-consul-k8s-component-auth-method' \
             -bearer-token-file '/run/secrets/kubernetes.io/serviceaccount/token' \
             -token-sink-file 'consul.token' \
