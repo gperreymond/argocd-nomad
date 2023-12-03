@@ -39,8 +39,12 @@ spec:
           consul login -method 'consul-server-consul-k8s-component-auth-method' \
             -bearer-token-file '/run/secrets/kubernetes.io/serviceaccount/token' \
             -token-sink-file 'consul.token' \
-            -http-addr=https://consul-server-consul-server.consul-system:8501
+            -http-addr=https://consul-server-consul-server.consul-system:8501 \
+            -ca-file=/etc/consul/ca-cert/tls.crt
           cat consul.token
+        volumeMounts:
+        - name: consul-server-consul-ca-cert
+          mountPath: /etc/consul/ca-cert
       containers:
       - name: nomad-server
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
@@ -134,8 +138,8 @@ spec:
           mountPath: /etc/consul/consul.d
         - name: consul-client-data
           mountPath: /var/lib/consul
-        - name: consul-client-tls
-          mountPath: /etc/consul/tls
+        - name: consul-server-consul-ca-cert
+          mountPath: /etc/consul/ca-cert
       terminationGracePeriodSeconds: 10
       securityContext:
         fsGroup: 1000
@@ -149,7 +153,7 @@ spec:
       - name: consul-client-config
         configMap:
           name: consul-client-config
-      - name: consul-client-tls
+      - name: consul-server-consul-ca-cert
         secret:
           secretName: consul-server-consul-ca-cert
   volumeClaimTemplates:

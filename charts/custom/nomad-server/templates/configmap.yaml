@@ -22,7 +22,7 @@ data:
         verify_incoming        = false
         verify_outgoing        = false
         verify_server_hostname = false
-        ca_file = "/etc/consul/tls/tls.crt"
+        ca_file = "/etc/consul/ca-cert/tls.crt"
       }
     }
     acl {
