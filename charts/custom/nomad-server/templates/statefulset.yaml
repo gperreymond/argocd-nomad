@@ -64,8 +64,8 @@ spec:
           protocol: 'UDP'
         resources:
           requests:
-            cpu: '500m'
-            memory: '1Gi'
+            cpu: '250m'
+            memory: '256Mi'
         volumeMounts:
         - name: nomad-server-config
           mountPath: /etc/nomad/nomad.d
@@ -73,6 +73,58 @@ spec:
           mountPath: /var/lib/nomad
         - name: nomad-server-tls
           mountPath: /etc/nomad/tls
+      - name: consul-client
+        image: 'hashicorp/consul:1.17.0'
+        args:
+        - 'agent'
+        - '-config-file=/etc/consul/consul.d/client.hcl'
+        - '-encrypt=$(GOSSIP_ENCRYPTION_KEY)'
+        env:
+        - name: GOSSIP_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: consul-server-consul-gossip-encryption-key
+              key: key
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - consul leave
+        ports:
+        - name: 'http'
+          containerPort: 8501
+          protocol: 'TCP'
+        - name: 'serf-lan-tcp'
+          containerPort: 8301
+          protocol: 'TCP'
+        - name: 'serf-lan-udp'
+          containerPort: 8301
+          protocol: 'UDP'
+        - name: 'serf-wan-tcp'
+          containerPort: 8302
+          protocol: 'TCP'
+        - name: 'serf-wan-udp'
+          containerPort: 8302
+          protocol: 'UDP'
+        - name: 'server-rpc'
+          containerPort: 8300
+          protocol: 'TCP'
+        - name: 'grpc'
+          containerPort: 8502
+          protocol: 'TCP'
+        resources:
+          requests:
+            cpu: '250m'
+            memory: '256Mi'
+        volumeMounts:
+        - name: consul-client-config
+          mountPath: /etc/consul/consul.d
+        - name: consul-client-data
+          mountPath: /var/lib/consul
+        - name: consul-client-tls
+          mountPath: /etc/consul/tls
       terminationGracePeriodSeconds: 10
       securityContext:
         fsGroup: 1000
@@ -83,9 +135,23 @@ spec:
       - name: nomad-server-tls
         secret:
           secretName: nomad-server-tls-certs
+      - name: consul-client-config
+        configMap:
+          name: consul-client-config
+      - name: consul-client-tls
+        secret:
+          secretName: consul-server-consul-ca-cert
   volumeClaimTemplates:
   - metadata:
       name: nomad-server-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+  - metadata:
+      name: consul-client-data
     spec:
       accessModes:
       - ReadWriteOnce
