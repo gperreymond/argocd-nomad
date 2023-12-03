@@ -25,6 +25,11 @@ data:
         ca_file = "/etc/consul/tls/tls.crt"
       }
     }
+    acl = {
+      enabled = true
+      default_policy = "client-policy"
+      enable_token_persistence = true
+    }
     auto_encrypt = {
       tls = true
     }

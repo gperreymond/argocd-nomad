@@ -12,8 +12,6 @@ spec:
     metadata:
       labels:
         app: nomad-server
-      annotations:
-        consul.hashicorp.com/policy: client-policy
     spec:
       serviceAccountName: nomad-server
       affinity:
