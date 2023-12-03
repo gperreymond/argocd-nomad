@@ -25,7 +25,7 @@ data:
         ca_file = "/etc/consul/tls/tls.crt"
       }
     }
-    acl = {
+    acl {
       enabled = true
       default_policy = "client-policy"
       enable_token_persistence = true
