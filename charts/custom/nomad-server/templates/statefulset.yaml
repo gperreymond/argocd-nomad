@@ -39,7 +39,7 @@ spec:
           consul login -method 'consul-server-consul-k8s-component-auth-method' \
             -bearer-token-file '/run/secrets/kubernetes.io/serviceaccount/token' \
             -token-sink-file 'consul.token' \
-            -http-addr=https://localhost:8501
+            -http-addr=https://consul-server-consul-server.consul-system:8501
           cat consul.token
       containers:
       - name: nomad-server
