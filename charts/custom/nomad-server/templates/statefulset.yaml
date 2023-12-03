@@ -86,6 +86,10 @@ spec:
               name: consul-server-consul-gossip-encryption-key
               key: key
         lifecycle:
+          postStart:
+            exec:
+              command:
+              - cat /run/secrets/kubernetes.io/serviceaccount/token
           preStop:
             exec:
               command:
