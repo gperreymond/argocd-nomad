@@ -36,7 +36,11 @@ spec:
         command: ['/bin/sh', '-c']
         args:
         - |
-          cat /run/secrets/kubernetes.io/serviceaccount/token
+          consul login -method 'consul-server-consul-k8s-component-auth-method' \
+            -bearer-token-file '/run/secrets/kubernetes.io/serviceaccount/token' \
+            -token-sink-file 'consul.token' \
+            -http-addr=https://localhost:8501
+          cat consul.token
       containers:
       - name: nomad-server
         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
