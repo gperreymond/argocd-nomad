@@ -17,6 +17,8 @@ $ kubectl apply --filename manifests/000-argocd-projects.yaml
 $ kubectl apply --filename manifests/010-cert-manager.yaml
 $ kubectl apply --filename manifests/011-traefik.yaml
 $ kubectl apply --filename manifests/012-argocd.yaml
+$ kubectl apply --filename manifests/021-vault.yaml
+
 # vault
 # consul
 # nomad

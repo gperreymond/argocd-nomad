@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: argocd-route
-  namespace: kube-system
+  namespace: argocd-system
 spec:
   entryPoints:
   - websecure
@@ -16,6 +16,7 @@ spec:
       name: argocd-server
       namespace: argocd-system
       port: 80
+      passHostHeader: true
   - match: 'Host(`argocd.docker.localhost`) && Headers(`Content-Type`, `application/grpc`)'
     kind: Rule
     priority: 11
@@ -24,6 +25,7 @@ spec:
       name: argocd-server
       namespace: argocd-system
       port: 80
+      passHostHeader: true
       scheme: h2c
   tls:
     secretName: argocd.docker.localhost
@@ -33,11 +35,12 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: argocd-docker-localhost
-  namespace: kube-system
+  namespace: argocd-system
 spec:
   secretName: argocd.docker.localhost
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
   dnsNames:
-  - 'argocd.docker-localhost.com'
+  - 'argocd.docker.localhost'
+        

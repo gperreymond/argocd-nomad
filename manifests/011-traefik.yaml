@@ -13,6 +13,10 @@ spec:
     dashboard:
       enabled: true
     ports:
+      web:
+        port: 80
+      websecure:
+        port: 443
       traefik:
         expose: true
     logs:
@@ -21,6 +25,9 @@ spec:
       access:
         enabled: true
         format: json
+    additionalArguments:
+      - '--entryPoints.web.http.redirections.entryPoint.to=websecure'
+      - '--entryPoints.web.http.redirections.entryPoint.scheme=https'
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -54,4 +61,4 @@ spec:
     name: selfsigned-issuer
     kind: ClusterIssuer
   dnsNames:
-  - 'traefik.docker-localhost.com'
+  - 'traefik.docker.localhost'
