@@ -77,31 +77,32 @@ kubectl get secret nomad-server-tls-certs -n nomad-system -o json | jq -r '.data
 kubectl get secret nomad-server-tls-certs -n nomad-system -o json | jq -r --arg REGION "$region" '.data[$REGION + "-cli-nomad.pem"]' | base64 --decode > certs/$region-cli-nomad.pem
 kubectl get secret nomad-server-tls-certs -n nomad-system -o json | jq -r --arg REGION "$region" '.data[$REGION + "-cli-nomad-key.pem"]' | base64 --decode > certs/$region-cli-nomad-key.pem
 
+
 # -----------------------
-# VERIFY BOOTSTRAP NOMAD
+# BOOTSTRAP NOMAD SERVERS
 # -----------------------
 
-nomad server members \
+servers=$(nomad server members \
     -address=https://nomad.docker.localhost \
     -region=$region \
     -ca-cert=certs/nomad-agent-ca.pem \
     -client-cert=certs/$region-cli-nomad.pem \
     -client-key=certs/$region-cli-nomad-key.pem \
-    -json
+    -token=$(cat certs/bootstrap.token) \
+    -json | jq -r '. | length' || 0)
 
-exit 0
-
-# -----------------------
-# RUN BOOTSTRAP NOMAD
-# -----------------------
-
-nomad acl bootstrap \
-    -address=https://nomad.docker.localhost \
-    -region=$region \
-    -ca-cert=certs/nomad-agent-ca.pem \
-    -client-cert=certs/$region-cli-nomad.pem \
-    -client-key=certs/$region-cli-nomad-key.pem \
-    certs/bootstrap.token
+if [ "$servers" -gt "0" ]; then
+    echo "[INFO] nomad servers already bootstrapped"
+else
+    echo "[INFO] nomad servers need to be bootstapped"
+    nomad acl bootstrap \
+        -address=https://nomad.docker.localhost \
+        -region=$region \
+        -ca-cert=certs/nomad-agent-ca.pem \
+        -client-cert=certs/$region-cli-nomad.pem \
+        -client-key=certs/$region-cli-nomad-key.pem \
+        certs/bootstrap.token
+fi
 
 # -----------------------
 # END

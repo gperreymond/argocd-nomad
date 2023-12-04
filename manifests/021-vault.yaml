@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vault-system
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault-server
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: hashistack-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  source:
+    repoURL: https://github.com/gperreymond/argocd-nomad.git
+    path: charts/custom/vault-server
+    targetRevision: master
+    helm:
+      releaseName: vault-server
+      valueFiles:
+      - values.yaml
+      values: |-
+        replicas: 2
+        image:
+          tag: 1.15.3
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault-system

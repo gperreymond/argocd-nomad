@@ -6,3 +6,4 @@ python 3.8.0
 k3d 5.6.0
 jq 1.7
 kubectx 0.9.5
+vault 1.15.3

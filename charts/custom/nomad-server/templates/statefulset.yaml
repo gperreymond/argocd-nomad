@@ -40,6 +40,14 @@ spec:
         args:
         - |
           cat /etc/consul/ca-cert/tls.crt
+          consul login \
+            -method=consul-server-consul-k8s-component-auth-method \
+            -datacenter={{ .Values.datacenter }} \
+            -bearer-token-file=/run/secrets/kubernetes.io/serviceaccount/token \
+            -token-sink-file=consul.token \
+            -http-addr=https://consul-server-consul-server.consul-system:8501 \
+            -ca-file=/etc/consul/ca-cert/tls.crt
+          cat consul.token
         volumeMounts:
         - name: consul-server-consul-ca-cert
           mountPath: /etc/consul/ca-cert

@@ -1,0 +1,6 @@
+replicas: TO_SET
+
+image:
+  repository: hashicorp/vault
+  pullPolicy: IfNotPresent
+  tag: TO_SET

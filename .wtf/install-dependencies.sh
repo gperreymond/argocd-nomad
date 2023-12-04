@@ -1,5 +1,6 @@
 #!/bin/bash
 
+asdf plugin add vault
 asdf plugin add nomad
 asdf plugin add consul
 asdf plugin add kubectl

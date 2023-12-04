@@ -1,0 +1,66 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: datacenter-system
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: All applications for datacenter
+  sourceRepos:
+  - '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: reflector-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: cert-manager
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: victoriametrics-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: vector-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hashistack-system
+  namespace: argocd-system
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: All applications for hashistack
+  sourceRepos:
+  - '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: vault-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: consul-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: nomad-system
+    server: https://kubernetes.default.svc
+    name: in-cluster
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+    name: in-cluster

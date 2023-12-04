@@ -1,3 +1,4 @@
+---
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -38,31 +39,19 @@ spec:
       name: traefik
       namespace: kube-system
       port: 9000
+  tls:
+    secretName: traefik.docker.localhost
 
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: cert-manager.io/v1
+kind: Certificate
 metadata:
-  name: argocd-route
+  name: traefik-docker-localhost
   namespace: kube-system
 spec:
-  entryPoints:
-  - websecure
-  routes:
-  - match: 'Host(`argocd.docker.localhost`)'
-    kind: Rule
-    priority: 10
-    services:
-    - kind: Service
-      name: argocd-server
-      namespace: argocd-system
-      port: 80
-  - match: 'Host(`argocd.docker.localhost`) && Headers(`Content-Type`, `application/grpc`)'
-    kind: Rule
-    priority: 11
-    services:
-    - kind: Service
-      name: argocd-server
-      namespace: argocd-system
-      port: 80
-      scheme: h2c
+  secretName: traefik.docker.localhost
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+  dnsNames:
+  - 'traefik.docker-localhost.com'

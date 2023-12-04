@@ -13,10 +13,13 @@ $ .wtf/cluster/stop.sh
 $ .wtf/cluster/delete.sh
 # only after cluster "create"
 $ .wtf/cluster/prepare.sh # waiting for all argocd pods... (2 minutes)
-$ kubectl apply --filename manifests/000-traefik-system.yaml
-$ kubectl apply --filename manifests/001-datacenter-system.yaml
-$ kubectl apply --filename manifests/002-hashistack-system.yaml # waiting for all consul pods... (4 minutes)
-$ .wtf/consul/preprare-reflector.sh
+$ kubectl apply --filename manifests/000-argocd-projects.yaml
+$ kubectl apply --filename manifests/010-cert-manager.yaml
+$ kubectl apply --filename manifests/011-traefik.yaml
+$ kubectl apply --filename manifests/012-argocd.yaml
+# vault
+# consul
+# nomad
 $ .wtf/nomad/generate-gossip-encryption-key.sh
 $ .wtf/nomad/generate-tls-certs.sh -region global
 $ kubectl apply --filename manifests/003-nomad-server.yaml
@@ -33,10 +36,6 @@ $ .wtf/nomad/boostrap-server.sh -region global
 
 
 ### Documentations
-
-```sh
-$ openssl x509 -in certs/global-server-nomad.pem -text -noou
-```
 
 * https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
 * https://developer.hashicorp.com/consul/docs/k8s/annotations-and-labels
