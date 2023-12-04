@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-config
+data:
+  vault.hcl: |
+    listener "tcp" {
+      address = "[::]:8200"
+      cluster_address = "[::]:8201"
+      tls_client_ca_file = "/etc/nomad/tls/car.crt"
+      tls_cert_file = "/etc/nomad/tls/tls.crt"
+      tls_key_file  = "/etc/nomad/tls/tls.key"
+    }
