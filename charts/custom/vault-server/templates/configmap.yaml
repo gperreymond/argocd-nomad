@@ -5,6 +5,10 @@ metadata:
   name: vault-config
 data:
   vault.hcl: |
+    cluster_name = "{{ .Values.datacenter }}"
+    ui = true
+    cluster_addr = "https://127.0.0.1:8201"
+    api_addr = "https://127.0.0.1:8200"
     listener "tcp" {
       address = "[::]:8200"
       cluster_address = "[::]:8201"
@@ -12,3 +16,8 @@ data:
       tls_cert_file = "/etc/nomad/tls/tls.crt"
       tls_key_file  = "/etc/nomad/tls/tls.key"
     }
+    cache {
+      use_auto_auth_token = false
+    }
+    disable_cache = true
+    disable_mlock = true
