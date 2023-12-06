@@ -12,7 +12,7 @@ data:
     listener "tcp" {
       address = "[::]:8200"
       cluster_address = "[::]:8201"
-      tls_client_ca_file = "/etc/vault/tls/car.crt"
+      tls_client_ca_file = "/etc/vault/tls/ca.crt"
       tls_cert_file = "/etc/vault/tls/tls.crt"
       tls_key_file  = "/etc/vault/tls/tls.key"
     }
@@ -20,7 +20,7 @@ data:
       use_auto_auth_token = false
     }
     storage "raft" {
-      path = "/var/lib/vault/data"
+      path = "/var/lib/vault"
     }
     disable_cache = true
     disable_mlock = true
