@@ -10,6 +10,10 @@ spec:
     kind: ClusterIssuer
   dnsNames:
   - 'vault.docker.localhost'
+  - 'vault-server'
+  - 'vault-server.vault-system'
+  - 'vault-server.vault-system.svc'
+  - 'vault-server.vault-system.svc.cluster.local'
   - '*.vault-server'
   - '*.vault-server.vault-system'
   - '*.vault-server.vault-system.svc'
