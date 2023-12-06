@@ -16,9 +16,6 @@ data:
       tls_cert_file = "/etc/vault/tls/tls.crt"
       tls_key_file  = "/etc/vault/tls/tls.key"
     }
-    cache {
-      use_auto_auth_token = false
-    }
     storage "raft" {
       path = "/var/lib/vault"
     }
