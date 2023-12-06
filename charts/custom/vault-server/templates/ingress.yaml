@@ -23,7 +23,7 @@ spec:
       namespace: vault-system
       scheme: https
       passHostHeader: true
-      serversTransport: vault.docker.localhost
+      serversTransport: vault-server-transport
       port: 8200
   tls:
     secretName: vault.docker.localhost
