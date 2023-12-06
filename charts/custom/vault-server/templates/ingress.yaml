@@ -15,6 +15,6 @@ spec:
       name: vault-server
       namespace: vault-system
       protocol: https
-      port: 8201
+      port: 8200
   tls:
     secretName: vault-server.docker.localhost
