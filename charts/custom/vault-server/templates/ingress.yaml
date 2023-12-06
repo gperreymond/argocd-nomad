@@ -1,4 +1,13 @@
 ---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: vault-server-transport
+
+spec:
+  serverName: vault.docker.localhost
+
+---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -15,6 +24,7 @@ spec:
       namespace: vault-system
       scheme: https
       passHostHeader: true
+      serversTransport: vault.docker.localhost
       port: 8200
   tls:
     secretName: vault.docker.localhost
