@@ -1,0 +1,94 @@
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: vault-server
+# spec:
+#   serviceName: vault-server
+#   replicas: {{ .Values.replicas }}
+#   selector:
+#     matchLabels:
+#       app: vault-server
+#   template:
+#     metadata:
+#       labels:
+#         app: vault-server
+#     spec:
+#       serviceAccountName: vault-server
+#       affinity:
+#         nodeAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#             nodeSelectorTerms:
+#             - matchExpressions:
+#               - key: node-role.kubernetes.io/master
+#                 operator: DoesNotExist
+#         podAntiAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#           - labelSelector:
+#               matchExpressions:
+#               - key: app
+#                 operator: In
+#                 values:
+#                 - vault-server
+#             topologyKey: kubernetes.io/hostname
+#       containers:
+#       - name: vault-server
+#         image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+#         args:
+#         - 'agent'
+#         - '-config=/etc/nomad/nomad.d/server.hcl'
+#         - '-encrypt=$(GOSSIP_ENCRYPTION_KEY)'
+#         env:
+#         - name: NOMAD_SKIP_DOCKER_IMAGE_WARN
+#           value: 'true'
+#         - name: GOSSIP_ENCRYPTION_KEY
+#           valueFrom:
+#             secretKeyRef:
+#               name: vault-server-gossip-encryption-key
+#               key: data
+#         - name: NAMESPACE
+#           valueFrom:
+#             fieldRef:
+#               fieldPath: metadata.namespace
+#         ports:
+#         - name: http
+#           containerPort: 4646
+#           protocol: 'TCP'
+#         - name: rpc
+#           containerPort: 4647
+#           protocol: 'TCP'
+#         - name: serf-tcp
+#           containerPort: 4648
+#           protocol: 'TCP'
+#         - name: serf-udp
+#           containerPort: 4648
+#           protocol: 'UDP'
+#         resources:
+#           requests:
+#             cpu: '250m'
+#             memory: '256Mi'
+#         volumeMounts:
+#         - name: vault-server-config
+#           mountPath: /etc/nomad/nomad.d
+#         - name: vault-server-data
+#           mountPath: /var/lib/nomad
+#         - name: vault-server-tls
+#           mountPath: /etc/nomad/tls
+#       terminationGracePeriodSeconds: 10
+#       securityContext:
+#         fsGroup: 1000
+#       volumes:
+#       - name: vault-server-config
+#         configMap:
+#           name: vault-server-config
+#       - name: vault-server-tls
+#         secret:
+#           secretName: vault-server-tls-certs
+#   volumeClaimTemplates:
+#   - metadata:
+#       name: vault-server-data
+#     spec:
+#       accessModes:
+#       - ReadWriteOnce
+#       resources:
+#         requests:
+#           storage: 10Gi

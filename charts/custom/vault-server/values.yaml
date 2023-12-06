@@ -4,3 +4,6 @@ image:
   repository: hashicorp/vault
   pullPolicy: IfNotPresent
   tag: TO_SET
+
+postgresql:
+  architecture: standalone
