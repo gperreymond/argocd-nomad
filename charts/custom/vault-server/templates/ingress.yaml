@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vault-server-route
+  namespace: vault-system
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`vault.docker.localhost`)'
+    kind: Rule
+    services:
+    - kind: Service
+      name: vault-server
+      namespace: vault-system
+      port: 8200
+  tls:
+    secretName: vault-server.docker.localhost
