@@ -5,5 +5,5 @@ image:
   pullPolicy: IfNotPresent
   tag: TO_SET
 
-postgresql:
-  architecture: standalone
+# postgresql:
+#   architecture: standalone
