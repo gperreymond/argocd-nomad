@@ -19,5 +19,8 @@ data:
     cache {
       use_auto_auth_token = false
     }
+    storage "raft" {
+      path = "/var/lib/vault/data"
+    }
     disable_cache = true
     disable_mlock = true
