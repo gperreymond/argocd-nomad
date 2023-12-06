@@ -9,7 +9,7 @@ spec:
     name: selfsigned-issuer
     kind: ClusterIssuer
   dnsNames:
-  - 'vault.docker.localhost.com'
+  - 'vault.docker.localhost'
   - '*.vault-server'
   - '*.vault-server.vault-system'
   - '*.vault-server.vault-system.svc'
