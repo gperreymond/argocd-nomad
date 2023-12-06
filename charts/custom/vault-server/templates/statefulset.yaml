@@ -52,6 +52,10 @@ spec:
           requests:
             cpu: '250m'
             memory: '256Mi'
+        securityContext:
+          capabilities:
+            add:
+              - IPC_LOCK
         volumeMounts:
         - name: vault-server-config
           mountPath: /etc/vault/vault.d
