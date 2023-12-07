@@ -5,6 +5,7 @@ metadata:
 spec:
   serviceName: vault-server
   replicas: {{ .Values.replicas }}
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
       app: vault-server
