@@ -13,8 +13,7 @@ metadata:
   name: vault-server-host-sni
 spec:
   headers:
-    customResponseHeaders:
-      SSL-Host: vault.docker.localhost
+    SSL-Host: vault.docker.localhost
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
