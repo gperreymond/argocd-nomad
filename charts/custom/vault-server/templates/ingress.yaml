@@ -5,6 +5,8 @@ metadata:
   name: vault-server-transport
 spec:
   insecureSkipVerify: false
+  rootCAsSecrets:
+  - vault.docker.localhost
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
