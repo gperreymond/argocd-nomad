@@ -7,7 +7,7 @@ spec:
   serverName: vault.docker.localhost
   insecureSkipVerify: false
   rootCAsSecrets:
-  - vault-docker-localhost-client
+  - vault-docker-localhost-server
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
