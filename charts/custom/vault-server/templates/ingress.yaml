@@ -26,7 +26,5 @@ spec:
       passHostHeader: true
       serversTransport: vault-server-transport
       port: 8200
-    middlewares:
-    - name: vault-server-host-sni
   tls:
     secretName: vault.docker.localhost
