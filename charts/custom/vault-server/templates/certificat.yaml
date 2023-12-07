@@ -5,6 +5,9 @@ metadata:
   name: vault-docker-localhost
 spec:
   secretName: vault.docker.localhost
+  usages:
+    - server auth
+    - client auth
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
@@ -19,4 +22,5 @@ spec:
   - '*.vault-server.vault-system.svc'
   - '*.vault-server.vault-system.svc.cluster.local'
   - 'localhost'
+  ipAddresses:
   - '127.0.0.1'
