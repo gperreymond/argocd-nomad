@@ -8,16 +8,6 @@ spec:
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: vault-server-host-sni
-spec:
-  headers:
-    customResponseHeaders:
-      Host: vault.docker.localhost
-
----
-apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: vault-server-route
@@ -39,3 +29,4 @@ spec:
     - name: vault-server-host-sni
   tls:
     secretName: vault.docker.localhost
+    passthrough: true
