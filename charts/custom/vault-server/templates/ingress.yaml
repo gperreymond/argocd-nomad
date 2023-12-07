@@ -30,3 +30,26 @@ spec:
       port: 8200
   tls:
     secretName: vault-docker-localhost-client
+
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vault-server-0-route
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: 'Host(`vault-server-0.docker.localhost`)'
+    kind: Rule
+    services:
+    - kind: Service
+      name: vault-server-0.vault-server
+      namespace: vault-system
+      scheme: https
+      passHostHeader: true
+      serversTransport: vault-server-transport
+      port: 8200
+  tls:
+    secretName: vault-docker-localhost-client
