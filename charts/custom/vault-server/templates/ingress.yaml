@@ -5,6 +5,7 @@ metadata:
   name: vault-server-transport
 spec:
   serverName: vault.docker.localhost
+  insecureSkipVerify: true
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -29,4 +30,3 @@ spec:
     - name: vault-server-host-sni
   tls:
     secretName: vault.docker.localhost
-    passthrough: true
