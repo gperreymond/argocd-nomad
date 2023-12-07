@@ -14,7 +14,7 @@ metadata:
 spec:
   headers:
     customResponseHeaders:
-      Host: vault.docker.localhost
+      SSL-Host: vault.docker.localhost
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
