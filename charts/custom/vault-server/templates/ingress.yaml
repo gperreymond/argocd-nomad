@@ -13,7 +13,7 @@ metadata:
   name: vault-server-host-sni
 spec:
   headers:
-    customrequestheaders:
+    customResponseHeaders:
       Host: vault.docker.localhost
 
 ---
