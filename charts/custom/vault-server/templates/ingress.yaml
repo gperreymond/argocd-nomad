@@ -4,7 +4,6 @@ kind: ServersTransport
 metadata:
   name: vault-server-transport
 spec:
-  # serverName: vault.docker.localhost
   insecureSkipVerify: true
 
 ---
