@@ -27,7 +27,7 @@ spec:
       valueFiles:
       - values.yaml
       values: |-
-        replicas: 1
+        replicas: 2
         image:
           tag: 1.15.3
   destination:

@@ -7,8 +7,8 @@ data:
   vault.hcl: |
     cluster_name = "{{ .Values.datacenter }}"
     ui = true
-    cluster_addr = "https://127.0.0.1:8201"
-    api_addr = "https://127.0.0.1:8200"
+    cluster_addr = "{{ `https://{{ GetInterfaceIP \"en0\" }}:8201` }}"
+    api_addr = "{{ `https://{{ GetInterfaceIP \"en0\" }}:8200` }}"
     listener "tcp" {
       address = "[::]:8200"
       cluster_address = "[::]:8201"
