@@ -5,6 +5,7 @@ metadata:
   name: vault-docker-localhost-server
 spec:
   secretName: vault-docker-localhost-server
+  revisionHistoryLimit: 5
   usages:
     - server auth
   issuerRef:
@@ -31,6 +32,7 @@ metadata:
   name: vault-docker-localhost-client
 spec:
   secretName: vault-docker-localhost-client
+  revisionHistoryLimit: 5
   usages:
     - client auth
   issuerRef:
